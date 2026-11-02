@@ -1,0 +1,1 @@
+begin if X > 0 X := 1 else skip end
