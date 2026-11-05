@@ -1,0 +1,3 @@
+begin
+  X := Y + 1
+end

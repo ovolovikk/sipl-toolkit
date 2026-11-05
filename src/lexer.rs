@@ -223,6 +223,45 @@ mod tests {
     }
 
     #[test]
+    fn text_of_every_token_lexes_back_to_it() {
+        let all = [
+            TokenKind::Identifier("X".into()),
+            TokenKind::Number("42".into()),
+            TokenKind::Begin,
+            TokenKind::End,
+            TokenKind::If,
+            TokenKind::Then,
+            TokenKind::Else,
+            TokenKind::While,
+            TokenKind::Do,
+            TokenKind::Skip,
+            TokenKind::Or,
+            TokenKind::Not,
+            TokenKind::Assign,
+            TokenKind::Semicolon,
+            TokenKind::Plus,
+            TokenKind::Minus,
+            TokenKind::Star,
+            TokenKind::Equal,
+            TokenKind::Greater,
+            TokenKind::LeftParen,
+            TokenKind::RightParen,
+        ];
+        for kind in all {
+            assert_eq!(kinds(kind.text()), vec![kind.clone(), TokenKind::Eof]);
+        }
+        assert_eq!(kinds(TokenKind::Eof.text()), vec![TokenKind::Eof]);
+    }
+
+    #[test]
+    fn describe() {
+        assert_eq!(TokenKind::Identifier("X".into()).describe(), "змінну `X`");
+        assert_eq!(TokenKind::Number("42".into()).describe(), "число `42`");
+        assert_eq!(TokenKind::While.describe(), "`while`");
+        assert_eq!(TokenKind::Eof.describe(), "кінець файлу");
+    }
+
+    #[test]
     fn unknown_character() {
         let err = tokenize("X := 1 & 2").unwrap_err();
         assert_eq!(err.span, Span::new(7, 8));

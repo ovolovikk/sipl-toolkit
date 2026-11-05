@@ -43,3 +43,53 @@ impl Diagnostic {
         )
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn render(src: &str, start: usize, end: usize) -> String {
+        Diagnostic::new("повідомлення", Span::new(start, end)).render(src, "f.sipl")
+    }
+
+    #[test]
+    fn underlines_span_on_its_line() {
+        assert_eq!(
+            render("begin\n  X := 1;\nend", 14, 15),
+            "помилка: повідомлення\n --> f.sipl:2:9\n  |\n2 |   X := 1;\n  |         ^\n"
+        );
+    }
+
+    #[test]
+    fn columns_count_characters_not_bytes() {
+        assert_eq!(
+            render("¬ ¬ X", 6, 7),
+            "помилка: повідомлення\n --> f.sipl:1:5\n  |\n1 | ¬ ¬ X\n  |     ^\n"
+        );
+    }
+
+    #[test]
+    fn multiline_span_is_cut_at_end_of_line() {
+        assert_eq!(
+            render("while X > 0 do\n  skip", 0, 21),
+            "помилка: повідомлення\n --> f.sipl:1:1\n  |\n1 | while X > 0 do\n  | ^^^^^^^^^^^^^^\n"
+        );
+    }
+
+    #[test]
+    fn end_of_file_gets_one_caret() {
+        assert_eq!(
+            render("begin", 5, 5),
+            "помилка: повідомлення\n --> f.sipl:1:6\n  |\n1 | begin\n  |      ^\n"
+        );
+    }
+
+    #[test]
+    fn gutter_widens_for_long_line_numbers() {
+        let src = format!("{}X", "\n".repeat(9));
+        assert_eq!(
+            render(&src, 9, 10),
+            "помилка: повідомлення\n  --> f.sipl:10:1\n   |\n10 | X\n   | ^\n"
+        );
+    }
+}

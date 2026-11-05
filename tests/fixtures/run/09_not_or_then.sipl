@@ -1,0 +1,3 @@
+begin
+  if ¬(X = 0) ∨ Y > 1 then R := 1 else R := 2
+end

@@ -66,3 +66,28 @@ fn invalid_programs_match_golden_errors() {
     }
     assert!(failures.is_empty(), "\n{}", failures.join("\n"));
 }
+
+#[test]
+fn programs_run_to_golden_results() {
+    let files = sipl_files("run");
+    assert!(files.len() >= 10);
+    let mut failures = Vec::new();
+    for path in &files {
+        let src = fs::read_to_string(path).unwrap();
+        let mut state = sipl::State::new();
+        for binding in fs::read_to_string(path.with_extension("in"))
+            .unwrap()
+            .split_whitespace()
+        {
+            let (name, value) = sipl::State::parse_binding(binding).unwrap();
+            state.set(&name, value);
+        }
+        let program = sipl::parse_program(&src).unwrap();
+        let actual = match sipl::run(&program, state) {
+            Ok(state) => state.to_string(),
+            Err(err) => err.to_diagnostic().short(&src),
+        };
+        check_golden(path, "out", &actual, &mut failures);
+    }
+    assert!(failures.is_empty(), "\n{}", failures.join("\n"));
+}
