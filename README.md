@@ -1,14 +1,25 @@
 # SIPL Toolkit (Rust)
 
+[![CI](https://github.com/ovolovikk/sipl-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/ovolovikk/sipl-toolkit/actions/workflows/ci.yml)
+
 Курсовий проєкт з дисципліни «Теорія програмування»: інструменти для мови SIPL.
 
-## Реалізовано
+## Обрані завдання
 
-| ID | Завдання | Бали |
-|---|---|---|
-| CORE-01 | Формальна граматика: [`grammar/sipl.ebnf`](grammar/sipl.ebnf), опис у [`docs/grammar.md`](docs/grammar.md) | 0.5 |
-| CORE-02 | Лексер, парсер рекурсивним спуском, типізоване AST із `Span` | 1.5 |
-| CORE-03 | Інтерпретатор зі станом і лімітом ітерацій, опис у [`docs/interpreter.md`](docs/interpreter.md) | 2.0 |
+Заявлено 10.5 бала (зараховується не більше 10).
+
+| ID | Завдання | Бали | Стан |
+|---|---|---|---|
+| CORE-01 | Формальна граматика: [`grammar/sipl.ebnf`](grammar/sipl.ebnf), опис у [`docs/grammar.md`](docs/grammar.md) | 0.5 | готово |
+| CORE-02 | Лексер, парсер рекурсивним спуском, типізоване AST із `Span` | 1.5 | готово |
+| CORE-03 | Інтерпретатор зі станом і лімітом ітерацій, опис у [`docs/interpreter.md`](docs/interpreter.md) | 2.0 | готово |
+| REL-01 | CI: формат, clippy, тести, покриття, збірка пакета на кожен push і PR | 0.5 | готово |
+| CORE-04 | Подієва модель виконання та trace | 1.0 | |
+| CORE-05 | CLI: `parse`, `check`, `run`, `trace`, JSON-режим | 1.0 | |
+| CORE-06 | Conformance suite | 1.0 | |
+| VIS-01 | Візуалізація дерева синтаксичного виводу | 1.5 | |
+| IDE-01 | VS Code extension: підсвітка синтаксису | 1.0 | |
+| REL-02 | GitHub Releases, SemVer, CHANGELOG | 0.5 | |
 
 ## Запуск
 
@@ -63,13 +74,27 @@ cargo test
 Після свідомої зміни формату виводу еталони перегенеровуються командою
 `SIPL_BLESS=1 cargo test --test fixtures`.
 
-Покриття тестами (потрібен [cargo-llvm-cov](https://github.com/taiki-e/cargo-llvm-cov)):
+## Перевірки та CI
+
+Кожна перевірка — окремий скрипт PowerShell 7.4+ у `scripts/`. Їх запускає GitHub Actions
+([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) на кожен push у `main` і на кожен PR,
+і їх так само можна запустити локально з будь-якої теки:
+
+| Скрипт | Що перевіряє |
+|---|---|
+| `scripts/format.ps1` | форматування (`cargo fmt --check`) |
+| `scripts/lint.ps1` | типи та lint (`cargo clippy`, попередження = помилки) |
+| `scripts/test.ps1` | усі тести |
+| `scripts/coverage.ps1` | покриття ядра (`src/` без `main.rs`) не менше 80% рядків |
+| `scripts/package.ps1` | збірка пакета `.crate` |
+| `scripts/ci.ps1` | усе вищенаведене по черзі |
 
 ```bash
-cargo llvm-cov --summary-only
+pwsh scripts/ci.ps1
 ```
 
-Ядро (`src/` без `main.rs`) покрите на 99% рядків.
+Для покриття потрібен [cargo-llvm-cov](https://github.com/taiki-e/cargo-llvm-cov).
+Зараз ядро покрите на 99% рядків.
 
 ## Структура
 
@@ -86,4 +111,6 @@ src/main.rs            командний рядок
 examples/              приклади програм
 tests/                 тести
 docs/                  опис граматики та семантики
+scripts/               перевірки (PowerShell 7.4+)
+.github/workflows/     CI
 ```

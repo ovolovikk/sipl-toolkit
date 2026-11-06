@@ -2,5 +2,10 @@
 name = "sipl"
 version = "0.1.0"
 edition = "2024"
+description = "Parser and interpreter for SIPL, a simple teaching programming language"
+repository = "https://github.com/ovolovikk/sipl-toolkit"
+readme = "README.md"
+license = "MIT"
+include = ["/src", "/tests", "/grammar", "/docs", "/examples", "/README.md", "/LICENSE"]
 
 [dependencies]

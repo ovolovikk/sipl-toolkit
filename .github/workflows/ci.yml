@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy, llvm-tools-preview
+
+      - uses: Swatinem/rust-cache@v2
+
+      - uses: taiki-e/install-action@cargo-llvm-cov
+
+      - name: Format
+        run: ./scripts/format.ps1
+
+      - name: Lint
+        run: ./scripts/lint.ps1
+
+      - name: Test
+        run: ./scripts/test.ps1
+
+      - name: Coverage
+        run: ./scripts/coverage.ps1
+
+      - name: Package
+        run: ./scripts/package.ps1
