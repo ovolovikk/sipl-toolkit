@@ -1,0 +1,4 @@
+2:3    if X > 0 then Y := 1 else Y := 2
+2:6      X > 0 = false
+2:29     Y := 2                Y: — → 2
+       [X ↦ 0, Y ↦ 2]

@@ -9,3 +9,4 @@ license = "MIT"
 include = ["/src", "/tests", "/grammar", "/docs", "/examples", "/README.md", "/LICENSE"]
 
 [dependencies]
+serde_json = { version = "1.0.154", features = ["preserve_order"] }

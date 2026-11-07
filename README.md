@@ -14,7 +14,7 @@
 | CORE-02 | Лексер, парсер рекурсивним спуском, типізоване AST із `Span` | 1.5 | готово |
 | CORE-03 | Інтерпретатор зі станом і лімітом ітерацій, опис у [`docs/interpreter.md`](docs/interpreter.md) | 2.0 | готово |
 | REL-01 | CI: формат, clippy, тести, покриття, збірка пакета на кожен push і PR | 0.5 | готово |
-| CORE-04 | Подієва модель виконання та trace | 1.0 | |
+| CORE-04 | Події виконання та trace, текстом і в JSON, опис у [`docs/trace.md`](docs/trace.md) | 1.0 | готово |
 | CORE-05 | CLI: `parse`, `check`, `run`, `trace`, JSON-режим | 1.0 | |
 | CORE-06 | Conformance suite | 1.0 | |
 | VIS-01 | Візуалізація дерева синтаксичного виводу | 1.5 | |
@@ -47,6 +47,22 @@ cargo run -- run examples/power.sipl X=2 Y=10
 
 Ліміт ітерацій циклів задається `--max-iterations N` (за замовчуванням 1 000 000).
 
+Покроково показати виконання (додайте `--json`, щоб отримати trace одним JSON-рядком):
+
+```bash
+cargo run -- trace examples/power.sipl X=2 Y=1
+```
+
+```
+2:3    R := 1                R: — → 1
+3:3    while Y > 0 do
+3:9      Y > 0 = true
+5:5      R := R * X            R: 1 → 2
+6:5      Y := Y - 1            Y: 1 → 0
+3:9      Y > 0 = false
+       [R ↦ 2, X ↦ 2, Y ↦ 0]
+```
+
 Помилки виводяться з рядком і колонкою:
 
 ```
@@ -69,7 +85,8 @@ cargo test
 - `tests/fixtures/valid/*.sipl` — коректні програми, очікуване AST у `*.ast`;
 - `tests/fixtures/invalid/*.sipl` — некоректні програми, очікувана помилка у `*.err`;
 - `tests/fixtures/run/*.sipl` — програми для виконання: початковий стан у `*.in`,
-  очікуваний результат у `*.out`.
+  очікуваний результат у `*.out`;
+- `tests/fixtures/trace/*.sipl` — програми з початковим станом у `*.in`, очікуваний trace у `*.trace`.
 
 Після свідомої зміни формату виводу еталони перегенеровуються командою
 `SIPL_BLESS=1 cargo test --test fixtures`.
@@ -107,6 +124,7 @@ src/span.rs            позиції у вихідному тексті
 src/diagnostic.rs      повідомлення про помилки
 src/state.rs           стан: змінна -> число
 src/interpreter.rs     виконання AST на стані
+src/trace.rs           події виконання, trace текстом і в JSON
 src/main.rs            командний рядок
 examples/              приклади програм
 tests/                 тести

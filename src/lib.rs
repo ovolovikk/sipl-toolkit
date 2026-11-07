@@ -5,6 +5,7 @@ pub mod lexer;
 pub mod parser;
 pub mod span;
 pub mod state;
+pub mod trace;
 
 pub use interpreter::{run, run_with_iteration_limit};
 pub use parser::parse_program;

@@ -1,0 +1,11 @@
+2:3    while ¬(X = Y) do
+2:9      ¬(X = Y) = true
+3:5      if X > Y then
+3:8        X > Y = false
+6:7        Y := Y - X            Y: 18 → 6
+2:9      ¬(X = Y) = true
+3:5      if X > Y then
+3:8        X > Y = true
+4:7        X := X - Y            X: 12 → 6
+2:9      ¬(X = Y) = false
+       [X ↦ 6, Y ↦ 6]

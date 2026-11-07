@@ -1,0 +1,8 @@
+begin
+  I := 0;
+  while 3 > I do
+  begin
+    I := I + 1;
+    S := S + I
+  end
+end

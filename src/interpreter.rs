@@ -2,6 +2,7 @@ use crate::ast::*;
 use crate::diagnostic::Diagnostic;
 use crate::span::Span;
 use crate::state::State;
+use crate::trace::{Event, Observer, Silent, StatementTag};
 
 pub const DEFAULT_ITERATION_LIMIT: u64 = 1_000_000;
 
@@ -36,6 +37,14 @@ impl RuntimeError {
         }
     }
 
+    pub fn code(&self) -> &'static str {
+        match self.kind {
+            RuntimeErrorKind::UndefinedVariable(_) => "undefined_variable",
+            RuntimeErrorKind::Overflow { .. } => "overflow",
+            RuntimeErrorKind::IterationLimitExceeded(_) => "iteration_limit_exceeded",
+        }
+    }
+
     pub fn to_diagnostic(&self) -> Diagnostic {
         Diagnostic::new(self.message(), self.span)
     }
@@ -50,22 +59,33 @@ pub fn run_with_iteration_limit(
     state: State,
     iteration_limit: u64,
 ) -> Result<State, RuntimeError> {
+    run_observed(program, state, iteration_limit, &mut Silent)
+}
+
+pub fn run_observed<O: Observer>(
+    program: &Program,
+    state: State,
+    iteration_limit: u64,
+    observer: &mut O,
+) -> Result<State, RuntimeError> {
     let mut interpreter = Interpreter {
         state,
         iterations: 0,
         iteration_limit,
+        observer,
     };
     interpreter.execute(&program.body)?;
     Ok(interpreter.state)
 }
 
-struct Interpreter {
+struct Interpreter<'o, O: Observer> {
     state: State,
     iterations: u64,
     iteration_limit: u64,
+    observer: &'o mut O,
 }
 
-impl Interpreter {
+impl<O: Observer> Interpreter<'_, O> {
     fn count_iteration(&mut self, loop_condition: Span) -> Result<(), RuntimeError> {
         self.iterations += 1;
         if self.iterations > self.iteration_limit {
@@ -78,10 +98,24 @@ impl Interpreter {
     }
 
     fn execute(&mut self, statement: &Statement) -> Result<(), RuntimeError> {
+        let tag = StatementTag::of(&statement.kind);
+        if let Some(statement_tag) = tag {
+            self.observer.on_event(Event::BeforeStatement {
+                statement: statement_tag,
+                span: statement.span,
+            });
+        }
         match &statement.kind {
             StatementKind::Assign { variable, value } => {
-                let value = self.evaluate(value)?;
-                self.state.set(&variable.name, value);
+                let new = self.evaluate(value)?;
+                let old = self.state.get(&variable.name);
+                self.state.set(&variable.name, new);
+                self.observer.on_event(Event::VariableChanged {
+                    name: variable.name.clone(),
+                    old,
+                    new,
+                    span: statement.span,
+                });
             }
             StatementKind::Sequence(first, second) => {
                 self.execute(first)?;
@@ -92,14 +126,14 @@ impl Interpreter {
                 then_branch,
                 else_branch,
             } => {
-                if self.check(condition)? {
+                if self.check_observed(condition)? {
                     self.execute(then_branch)?;
                 } else {
                     self.execute(else_branch)?;
                 }
             }
             StatementKind::While { condition, body } => {
-                while self.check(condition)? {
+                while self.check_observed(condition)? {
                     self.count_iteration(condition.span)?;
                     self.execute(body)?;
                 }
@@ -107,7 +141,22 @@ impl Interpreter {
             StatementKind::Block(inner) => self.execute(inner)?,
             StatementKind::Skip => {}
         }
+        if let Some(statement_tag) = tag {
+            self.observer.on_event(Event::AfterStatement {
+                statement: statement_tag,
+                span: statement.span,
+            });
+        }
         Ok(())
+    }
+
+    fn check_observed(&mut self, condition: &BoolExpr) -> Result<bool, RuntimeError> {
+        let value = self.check(condition)?;
+        self.observer.on_event(Event::ConditionChecked {
+            value,
+            span: condition.span,
+        });
+        Ok(value)
     }
 
     fn evaluate(&self, expr: &ArithExpr) -> Result<i64, RuntimeError> {
