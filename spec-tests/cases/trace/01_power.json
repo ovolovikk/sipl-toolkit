@@ -1,0 +1,110 @@
+{
+  "command": "trace",
+  "state": {
+    "X": 2,
+    "Y": 2
+  },
+  "expect": {
+    "ok": true,
+    "events": [
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "R",
+        "old": null,
+        "new": 1
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "before_statement",
+        "statement": "while"
+      },
+      {
+        "event": "condition_checked",
+        "value": true
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "R",
+        "old": 1,
+        "new": 2
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "Y",
+        "old": 2,
+        "new": 1
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "condition_checked",
+        "value": true
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "R",
+        "old": 2,
+        "new": 4
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "Y",
+        "old": 1,
+        "new": 0
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "condition_checked",
+        "value": false
+      },
+      {
+        "event": "after_statement",
+        "statement": "while"
+      },
+      {
+        "event": "finished",
+        "state": {
+          "R": 4,
+          "X": 2,
+          "Y": 0
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "command": "trace",
+  "expect": {
+    "ok": false,
+    "events": [
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "I",
+        "old": null,
+        "new": 0
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "before_statement",
+        "statement": "while"
+      },
+      {
+        "event": "condition_checked",
+        "value": true
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "I",
+        "old": 0,
+        "new": 1
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "failed",
+        "error": "undefined_variable"
+      }
+    ]
+  }
+}

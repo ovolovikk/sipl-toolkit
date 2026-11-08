@@ -1,0 +1,43 @@
+{
+  "command": "parse",
+  "expect": {
+    "ok": true,
+    "ast": {
+      "type": "program",
+      "body": {
+        "type": "assign",
+        "variable": {
+          "name": "X"
+        },
+        "value": {
+          "type": "binary",
+          "op": "-",
+          "left": {
+            "type": "binary",
+            "op": "+",
+            "left": {
+              "type": "number",
+              "value": 1
+            },
+            "right": {
+              "type": "binary",
+              "op": "*",
+              "left": {
+                "type": "number",
+                "value": 2
+              },
+              "right": {
+                "type": "number",
+                "value": 3
+              }
+            }
+          },
+          "right": {
+            "type": "number",
+            "value": 4
+          }
+        }
+      }
+    }
+  }
+}

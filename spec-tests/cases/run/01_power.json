@@ -1,0 +1,15 @@
+{
+  "command": "run",
+  "state": {
+    "X": 2,
+    "Y": 10
+  },
+  "expect": {
+    "ok": true,
+    "state": {
+      "R": 1024,
+      "X": 2,
+      "Y": 0
+    }
+  }
+}

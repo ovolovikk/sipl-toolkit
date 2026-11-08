@@ -1,0 +1,289 @@
+{
+  "command": "parse",
+  "expect": {
+    "ok": true,
+    "ast": {
+      "type": "program",
+      "body": {
+        "type": "sequence",
+        "first": {
+          "type": "assign",
+          "variable": {
+            "name": "R",
+            "span": {
+              "start": {
+                "line": 2,
+                "column": 3
+              },
+              "end": {
+                "line": 2,
+                "column": 4
+              }
+            }
+          },
+          "value": {
+            "type": "number",
+            "value": 1,
+            "span": {
+              "start": {
+                "line": 2,
+                "column": 8
+              },
+              "end": {
+                "line": 2,
+                "column": 9
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 2,
+              "column": 3
+            },
+            "end": {
+              "line": 2,
+              "column": 9
+            }
+          }
+        },
+        "second": {
+          "type": "while",
+          "condition": {
+            "type": "compare",
+            "op": ">",
+            "left": {
+              "type": "variable",
+              "name": "Y",
+              "span": {
+                "start": {
+                  "line": 3,
+                  "column": 9
+                },
+                "end": {
+                  "line": 3,
+                  "column": 10
+                }
+              }
+            },
+            "right": {
+              "type": "number",
+              "value": 0,
+              "span": {
+                "start": {
+                  "line": 3,
+                  "column": 13
+                },
+                "end": {
+                  "line": 3,
+                  "column": 14
+                }
+              }
+            },
+            "span": {
+              "start": {
+                "line": 3,
+                "column": 9
+              },
+              "end": {
+                "line": 3,
+                "column": 14
+              }
+            }
+          },
+          "body": {
+            "type": "block",
+            "body": {
+              "type": "sequence",
+              "first": {
+                "type": "assign",
+                "variable": {
+                  "name": "R",
+                  "span": {
+                    "start": {
+                      "line": 5,
+                      "column": 5
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 6
+                    }
+                  }
+                },
+                "value": {
+                  "type": "binary",
+                  "op": "*",
+                  "left": {
+                    "type": "variable",
+                    "name": "R",
+                    "span": {
+                      "start": {
+                        "line": 5,
+                        "column": 10
+                      },
+                      "end": {
+                        "line": 5,
+                        "column": 11
+                      }
+                    }
+                  },
+                  "right": {
+                    "type": "variable",
+                    "name": "X",
+                    "span": {
+                      "start": {
+                        "line": 5,
+                        "column": 14
+                      },
+                      "end": {
+                        "line": 5,
+                        "column": 15
+                      }
+                    }
+                  },
+                  "span": {
+                    "start": {
+                      "line": 5,
+                      "column": 10
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 15
+                    }
+                  }
+                },
+                "span": {
+                  "start": {
+                    "line": 5,
+                    "column": 5
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 15
+                  }
+                }
+              },
+              "second": {
+                "type": "assign",
+                "variable": {
+                  "name": "Y",
+                  "span": {
+                    "start": {
+                      "line": 6,
+                      "column": 5
+                    },
+                    "end": {
+                      "line": 6,
+                      "column": 6
+                    }
+                  }
+                },
+                "value": {
+                  "type": "binary",
+                  "op": "-",
+                  "left": {
+                    "type": "variable",
+                    "name": "Y",
+                    "span": {
+                      "start": {
+                        "line": 6,
+                        "column": 10
+                      },
+                      "end": {
+                        "line": 6,
+                        "column": 11
+                      }
+                    }
+                  },
+                  "right": {
+                    "type": "number",
+                    "value": 1,
+                    "span": {
+                      "start": {
+                        "line": 6,
+                        "column": 14
+                      },
+                      "end": {
+                        "line": 6,
+                        "column": 15
+                      }
+                    }
+                  },
+                  "span": {
+                    "start": {
+                      "line": 6,
+                      "column": 10
+                    },
+                    "end": {
+                      "line": 6,
+                      "column": 15
+                    }
+                  }
+                },
+                "span": {
+                  "start": {
+                    "line": 6,
+                    "column": 5
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 15
+                  }
+                }
+              },
+              "span": {
+                "start": {
+                  "line": 5,
+                  "column": 5
+                },
+                "end": {
+                  "line": 6,
+                  "column": 15
+                }
+              }
+            },
+            "span": {
+              "start": {
+                "line": 4,
+                "column": 3
+              },
+              "end": {
+                "line": 7,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 3,
+              "column": 3
+            },
+            "end": {
+              "line": 7,
+              "column": 6
+            }
+          }
+        },
+        "span": {
+          "start": {
+            "line": 2,
+            "column": 3
+          },
+          "end": {
+            "line": 7,
+            "column": 6
+          }
+        }
+      },
+      "span": {
+        "start": {
+          "line": 1,
+          "column": 1
+        },
+        "end": {
+          "line": 8,
+          "column": 4
+        }
+      }
+    }
+  }
+}

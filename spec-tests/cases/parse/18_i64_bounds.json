@@ -1,0 +1,32 @@
+{
+  "command": "parse",
+  "expect": {
+    "ok": true,
+    "ast": {
+      "type": "program",
+      "body": {
+        "type": "sequence",
+        "first": {
+          "type": "assign",
+          "variable": {
+            "name": "X"
+          },
+          "value": {
+            "type": "number",
+            "value": 9223372036854775807
+          }
+        },
+        "second": {
+          "type": "assign",
+          "variable": {
+            "name": "Y"
+          },
+          "value": {
+            "type": "number",
+            "value": -9223372036854775808
+          }
+        }
+      }
+    }
+  }
+}

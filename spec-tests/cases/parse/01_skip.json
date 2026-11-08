@@ -1,0 +1,12 @@
+{
+  "command": "parse",
+  "expect": {
+    "ok": true,
+    "ast": {
+      "type": "program",
+      "body": {
+        "type": "skip"
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "command": "check",
+  "expect": {
+    "ok": false,
+    "error": {
+      "kind": "syntax",
+      "span": {
+        "start": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    }
+  }
+}

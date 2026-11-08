@@ -1,0 +1,16 @@
+{
+  "command": "trace",
+  "expect": {
+    "ok": false,
+    "events": [
+      {
+        "event": "before_statement",
+        "statement": "if"
+      },
+      {
+        "event": "failed",
+        "error": "undefined_variable"
+      }
+    ]
+  }
+}

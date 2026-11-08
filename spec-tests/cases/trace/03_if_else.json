@@ -1,0 +1,44 @@
+{
+  "command": "trace",
+  "state": {
+    "X": 0
+  },
+  "expect": {
+    "ok": true,
+    "events": [
+      {
+        "event": "before_statement",
+        "statement": "if"
+      },
+      {
+        "event": "condition_checked",
+        "value": false
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "Y",
+        "old": null,
+        "new": 2
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "after_statement",
+        "statement": "if"
+      },
+      {
+        "event": "finished",
+        "state": {
+          "X": 0,
+          "Y": 2
+        }
+      }
+    ]
+  }
+}

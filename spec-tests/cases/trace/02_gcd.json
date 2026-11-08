@@ -1,0 +1,91 @@
+{
+  "command": "trace",
+  "state": {
+    "X": 12,
+    "Y": 18
+  },
+  "expect": {
+    "ok": true,
+    "events": [
+      {
+        "event": "before_statement",
+        "statement": "while"
+      },
+      {
+        "event": "condition_checked",
+        "value": true
+      },
+      {
+        "event": "before_statement",
+        "statement": "if"
+      },
+      {
+        "event": "condition_checked",
+        "value": false
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "Y",
+        "old": 18,
+        "new": 6
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "after_statement",
+        "statement": "if"
+      },
+      {
+        "event": "condition_checked",
+        "value": true
+      },
+      {
+        "event": "before_statement",
+        "statement": "if"
+      },
+      {
+        "event": "condition_checked",
+        "value": true
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "X",
+        "old": 12,
+        "new": 6
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "after_statement",
+        "statement": "if"
+      },
+      {
+        "event": "condition_checked",
+        "value": false
+      },
+      {
+        "event": "after_statement",
+        "statement": "while"
+      },
+      {
+        "event": "finished",
+        "state": {
+          "X": 6,
+          "Y": 6
+        }
+      }
+    ]
+  }
+}

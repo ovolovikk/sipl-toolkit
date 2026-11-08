@@ -1,0 +1,14 @@
+{
+  "command": "run",
+  "state": {
+    "X": 12,
+    "Y": 18
+  },
+  "expect": {
+    "ok": true,
+    "state": {
+      "X": 6,
+      "Y": 6
+    }
+  }
+}

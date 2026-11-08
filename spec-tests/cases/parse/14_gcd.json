@@ -1,0 +1,78 @@
+{
+  "command": "parse",
+  "expect": {
+    "ok": true,
+    "ast": {
+      "type": "program",
+      "body": {
+        "type": "while",
+        "condition": {
+          "type": "not",
+          "operand": {
+            "type": "compare",
+            "op": "=",
+            "left": {
+              "type": "variable",
+              "name": "X"
+            },
+            "right": {
+              "type": "variable",
+              "name": "Y"
+            }
+          }
+        },
+        "body": {
+          "type": "if",
+          "condition": {
+            "type": "compare",
+            "op": ">",
+            "left": {
+              "type": "variable",
+              "name": "X"
+            },
+            "right": {
+              "type": "variable",
+              "name": "Y"
+            }
+          },
+          "then": {
+            "type": "assign",
+            "variable": {
+              "name": "X"
+            },
+            "value": {
+              "type": "binary",
+              "op": "-",
+              "left": {
+                "type": "variable",
+                "name": "X"
+              },
+              "right": {
+                "type": "variable",
+                "name": "Y"
+              }
+            }
+          },
+          "else": {
+            "type": "assign",
+            "variable": {
+              "name": "Y"
+            },
+            "value": {
+              "type": "binary",
+              "op": "-",
+              "left": {
+                "type": "variable",
+                "name": "Y"
+              },
+              "right": {
+                "type": "variable",
+                "name": "X"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

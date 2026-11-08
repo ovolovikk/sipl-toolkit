@@ -1,41 +1,29 @@
-# SIPL Toolkit (Rust)
+# SIPL Toolkit
 
 [![CI](https://github.com/ovolovikk/sipl-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/ovolovikk/sipl-toolkit/actions/workflows/ci.yml)
 
-Курсовий проєкт з дисципліни «Теорія програмування»: інструменти для мови SIPL.
+Курсовий проєкт з «Теорії програмування»: парсер, інтерпретатор і trace для мови SIPL, на Rust.
 
-## Обрані завдання
+## Завдання
 
 Заявлено 10.5 бала (зараховується не більше 10).
 
-| ID | Завдання | Бали | Стан |
+| ID | Що | Бали | |
 |---|---|---|---|
-| CORE-01 | Формальна граматика: [`grammar/sipl.ebnf`](grammar/sipl.ebnf), опис у [`docs/grammar.md`](docs/grammar.md) | 0.5 | готово |
-| CORE-02 | Лексер, парсер рекурсивним спуском, типізоване AST із `Span` | 1.5 | готово |
-| CORE-03 | Інтерпретатор зі станом і лімітом ітерацій, опис у [`docs/interpreter.md`](docs/interpreter.md) | 2.0 | готово |
-| REL-01 | CI: формат, clippy, тести, покриття, збірка пакета на кожен push і PR | 0.5 | готово |
-| CORE-04 | Події виконання та trace, текстом і в JSON, опис у [`docs/trace.md`](docs/trace.md) | 1.0 | готово |
-| CORE-05 | CLI: `parse`, `check`, `run`, `trace`, JSON-режим, опис у [`docs/cli.md`](docs/cli.md) | 1.0 | готово |
-| CORE-06 | Conformance suite | 1.0 | |
-| VIS-01 | Візуалізація дерева синтаксичного виводу | 1.5 | |
-| IDE-01 | VS Code extension: підсвітка синтаксису | 1.0 | |
-| REL-02 | GitHub Releases, SemVer, CHANGELOG | 0.5 | |
+| CORE-01 | граматика, [`docs/grammar.md`](docs/grammar.md) | 0.5 | ✓ |
+| CORE-02 | парсер і AST | 1.5 | ✓ |
+| CORE-03 | інтерпретатор, [`docs/interpreter.md`](docs/interpreter.md) | 2.0 | ✓ |
+| CORE-04 | trace, [`docs/trace.md`](docs/trace.md) | 1.0 | ✓ |
+| CORE-05 | командний рядок, [`docs/cli.md`](docs/cli.md) | 1.0 | ✓ |
+| CORE-06 | тести специфікації, [`spec-tests/`](spec-tests/README.md) | 1.0 | ✓ |
+| REL-01 | CI | 0.5 | ✓ |
+| VIS-01 | дерево синтаксичного виводу | 1.5 | |
+| IDE-01 | підсвітка в VS Code | 1.0 | |
+| REL-02 | релізи, CHANGELOG | 0.5 | |
 
 ## Запуск
 
-Потрібен Rust (stable, edition 2024).
-
-Розібрати програму і вивести AST у вигляді S-виразу:
-
-```bash
-cargo run -- parse examples/power.sipl
-```
-
-```
-(; (:= R 1) (while (> Y 0) (begin (; (:= R (* R X)) (:= Y (- Y 1))))))
-```
-
-Виконати програму на початковому стані:
+Потрібен Rust stable.
 
 ```bash
 cargo run -- run examples/power.sipl X=2 Y=10
@@ -45,98 +33,26 @@ cargo run -- run examples/power.sipl X=2 Y=10
 [R ↦ 1024, X ↦ 2, Y ↦ 0]
 ```
 
-Ліміт ітерацій циклів задається `--max-iterations N` (за замовчуванням 1 000 000).
+Інші команди: `parse`, `check`, `trace`, усі з `--json`. Див. [`docs/cli.md`](docs/cli.md).
 
-Покроково показати виконання (додайте `--json`, щоб отримати trace одним JSON-рядком):
-
-```bash
-cargo run -- trace examples/power.sipl X=2 Y=1
-```
-
-```
-2:3    R := 1                R: — → 1
-3:3    while Y > 0 do
-3:9      Y > 0 = true
-5:5      R := R * X            R: 1 → 2
-6:5      Y := Y - 1            Y: 1 → 0
-3:9      Y > 0 = false
-       [R ↦ 2, X ↦ 2, Y ↦ 0]
-```
-
-Помилки виводяться з рядком і колонкою:
-
-```
-помилка: змінна `Y` не має значення в поточному стані
- --> examples/power.sipl:3:9
-  |
-3 |   while Y > 0 do
-  |         ^
-```
-
-Перевірити лише синтаксис: `sipl check <файл>`. Кожна команда приймає `--json` і тоді
-виводить один JSON-об'єкт в один рядок, включно з помилками.
-
-Коди завершення: `0` — успіх, `1` — синтаксична помилка, `2` — неправильні аргументи
-або файл не читається, `3` — помилка виконання.
-
-Повний опис команд, кодів і JSON-формату: [`docs/cli.md`](docs/cli.md).
-
-## Тести
+## Перевірки
 
 ```bash
-cargo test
+cargo test              # усі тести
+pwsh scripts/ci.ps1     # те саме, що в CI: формат, clippy, тести, покриття ≥ 80%, пакет
 ```
 
-- `tests/fixtures/valid/*.sipl` — коректні програми, очікуване AST у `*.ast`;
-- `tests/fixtures/invalid/*.sipl` — некоректні програми, очікувана помилка у `*.err`;
-- `tests/fixtures/run/*.sipl` — програми для виконання: початковий стан у `*.in`,
-  очікуваний результат у `*.out`;
-- `tests/fixtures/trace/*.sipl` — програми з початковим станом у `*.in`, очікуваний trace у `*.trace`;
-- `tests/cli.rs` — інтеграційні тести: запускають бінарник `sipl` і перевіряють вивід,
-  JSON і коди завершення.
-
-Після свідомої зміни формату виводу еталони перегенеровуються командою
-`SIPL_BLESS=1 cargo test --test fixtures`.
-
-## Перевірки та CI
-
-Кожна перевірка — окремий скрипт PowerShell 7.4+ у `scripts/`. Їх запускає GitHub Actions
-([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) на кожен push у `main` і на кожен PR,
-і їх так само можна запустити локально з будь-якої теки:
-
-| Скрипт | Що перевіряє |
-|---|---|
-| `scripts/format.ps1` | форматування (`cargo fmt --check`) |
-| `scripts/lint.ps1` | типи та lint (`cargo clippy`, попередження = помилки) |
-| `scripts/test.ps1` | усі тести |
-| `scripts/coverage.ps1` | покриття тестами не менше 80% рядків |
-| `scripts/package.ps1` | збірка пакета `.crate` |
-| `scripts/ci.ps1` | усе вищенаведене по черзі |
-
-```bash
-pwsh scripts/ci.ps1
-```
-
-Для покриття потрібен [cargo-llvm-cov](https://github.com/taiki-e/cargo-llvm-cov).
-Зараз покрито 99.6% рядків.
+Кожна перевірка — окремий скрипт у `scripts/` (PowerShell 7.4+).
+Еталони тестів оновлюються командою `SIPL_BLESS=1 cargo test --test fixtures`.
 
 ## Структура
 
 ```
-grammar/sipl.ebnf      граматика
-src/lexer.rs           текст -> токени
-src/parser.rs          токени -> AST
-src/ast.rs             вузли AST
-src/span.rs            позиції у вихідному тексті
-src/diagnostic.rs      повідомлення про помилки
-src/state.rs           стан: змінна -> число
-src/interpreter.rs     виконання AST на стані
-src/trace.rs           події виконання, trace текстом і в JSON
-src/json.rs            JSON-подання AST, стану й помилок
-src/main.rs            командний рядок
-examples/              приклади програм
-tests/                 тести
-docs/                  опис граматики та семантики
-scripts/               перевірки (PowerShell 7.4+)
-.github/workflows/     CI
+grammar/      граматика
+src/          lexer → parser → ast → interpreter → trace, json, main (CLI)
+tests/        модульні, еталонні та інтеграційні тести
+spec-tests/   тести специфікації, незалежні від реалізації
+examples/     приклади програм
+docs/         опис
+scripts/      перевірки
 ```

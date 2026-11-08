@@ -31,6 +31,9 @@ jobs:
       - name: Test
         run: ./scripts/test.ps1
 
+      - name: Spec tests
+        run: ./scripts/spec-tests.ps1
+
       - name: Coverage
         run: ./scripts/coverage.ps1
 

@@ -1,0 +1,7 @@
+begin
+  begin
+    begin skip end;
+    X := 1
+  end;
+  begin Y := 2 end
+end

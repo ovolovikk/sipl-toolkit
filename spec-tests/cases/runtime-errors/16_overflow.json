@@ -1,0 +1,16 @@
+{
+  "command": "run",
+  "expect": {
+    "ok": false,
+    "error": {
+      "kind": "runtime",
+      "code": "overflow",
+      "span": {
+        "start": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    }
+  }
+}

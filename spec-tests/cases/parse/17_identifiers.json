@@ -1,0 +1,27 @@
+{
+  "command": "parse",
+  "expect": {
+    "ok": true,
+    "ast": {
+      "type": "program",
+      "body": {
+        "type": "assign",
+        "variable": {
+          "name": "Counter_1"
+        },
+        "value": {
+          "type": "binary",
+          "op": "+",
+          "left": {
+            "type": "variable",
+            "name": "counter_1"
+          },
+          "right": {
+            "type": "number",
+            "value": 1
+          }
+        }
+      }
+    }
+  }
+}

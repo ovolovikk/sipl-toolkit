@@ -1,0 +1,16 @@
+{
+  "command": "run",
+  "expect": {
+    "ok": false,
+    "error": {
+      "kind": "runtime",
+      "code": "undefined_variable",
+      "span": {
+        "start": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "command": "parse",
+  "expect": {
+    "ok": true,
+    "ast": {
+      "type": "program",
+      "body": {
+        "type": "assign",
+        "variable": {
+          "name": "X"
+        },
+        "value": {
+          "type": "number",
+          "value": 5
+        }
+      }
+    }
+  }
+}

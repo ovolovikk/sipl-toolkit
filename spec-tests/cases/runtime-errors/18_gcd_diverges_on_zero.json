@@ -1,0 +1,21 @@
+{
+  "command": "run",
+  "state": {
+    "X": 0,
+    "Y": 5
+  },
+  "max_iterations": 1000,
+  "expect": {
+    "ok": false,
+    "error": {
+      "kind": "runtime",
+      "code": "iteration_limit_exceeded",
+      "span": {
+        "start": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    }
+  }
+}

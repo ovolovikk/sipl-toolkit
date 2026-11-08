@@ -1,0 +1,44 @@
+{
+  "command": "trace",
+  "expect": {
+    "ok": false,
+    "events": [
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "X",
+        "old": null,
+        "new": 9223372036854775806
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "X",
+        "old": 9223372036854775806,
+        "new": 9223372036854775807
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "failed",
+        "error": "overflow"
+      }
+    ]
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "command": "parse",
+  "expect": {
+    "ok": true,
+    "ast": {
+      "type": "program",
+      "body": {
+        "type": "sequence",
+        "first": {
+          "type": "sequence",
+          "first": {
+            "type": "assign",
+            "variable": {
+              "name": "F"
+            },
+            "value": {
+              "type": "number",
+              "value": 1
+            }
+          },
+          "second": {
+            "type": "assign",
+            "variable": {
+              "name": "I"
+            },
+            "value": {
+              "type": "number",
+              "value": 1
+            }
+          }
+        },
+        "second": {
+          "type": "while",
+          "condition": {
+            "type": "compare",
+            "op": ">",
+            "left": {
+              "type": "variable",
+              "name": "N"
+            },
+            "right": {
+              "type": "binary",
+              "op": "-",
+              "left": {
+                "type": "variable",
+                "name": "I"
+              },
+              "right": {
+                "type": "number",
+                "value": 1
+              }
+            }
+          },
+          "body": {
+            "type": "block",
+            "body": {
+              "type": "sequence",
+              "first": {
+                "type": "assign",
+                "variable": {
+                  "name": "F"
+                },
+                "value": {
+                  "type": "binary",
+                  "op": "*",
+                  "left": {
+                    "type": "variable",
+                    "name": "F"
+                  },
+                  "right": {
+                    "type": "variable",
+                    "name": "I"
+                  }
+                }
+              },
+              "second": {
+                "type": "assign",
+                "variable": {
+                  "name": "I"
+                },
+                "value": {
+                  "type": "binary",
+                  "op": "+",
+                  "left": {
+                    "type": "variable",
+                    "name": "I"
+                  },
+                  "right": {
+                    "type": "number",
+                    "value": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

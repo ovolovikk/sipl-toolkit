@@ -1,0 +1,79 @@
+{
+  "command": "parse",
+  "expect": {
+    "ok": true,
+    "ast": {
+      "type": "program",
+      "body": {
+        "type": "sequence",
+        "first": {
+          "type": "assign",
+          "variable": {
+            "name": "R"
+          },
+          "value": {
+            "type": "number",
+            "value": 1
+          }
+        },
+        "second": {
+          "type": "while",
+          "condition": {
+            "type": "compare",
+            "op": ">",
+            "left": {
+              "type": "variable",
+              "name": "Y"
+            },
+            "right": {
+              "type": "number",
+              "value": 0
+            }
+          },
+          "body": {
+            "type": "block",
+            "body": {
+              "type": "sequence",
+              "first": {
+                "type": "assign",
+                "variable": {
+                  "name": "R"
+                },
+                "value": {
+                  "type": "binary",
+                  "op": "*",
+                  "left": {
+                    "type": "variable",
+                    "name": "R"
+                  },
+                  "right": {
+                    "type": "variable",
+                    "name": "X"
+                  }
+                }
+              },
+              "second": {
+                "type": "assign",
+                "variable": {
+                  "name": "Y"
+                },
+                "value": {
+                  "type": "binary",
+                  "op": "-",
+                  "left": {
+                    "type": "variable",
+                    "name": "Y"
+                  },
+                  "right": {
+                    "type": "number",
+                    "value": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

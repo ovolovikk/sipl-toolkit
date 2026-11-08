@@ -1,0 +1,244 @@
+{
+  "command": "trace",
+  "state": {
+    "N": 2
+  },
+  "expect": {
+    "ok": true,
+    "events": [
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "S",
+        "old": null,
+        "new": 0
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "I",
+        "old": null,
+        "new": 1
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "before_statement",
+        "statement": "while"
+      },
+      {
+        "event": "condition_checked",
+        "value": true
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "J",
+        "old": null,
+        "new": 1
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "before_statement",
+        "statement": "while"
+      },
+      {
+        "event": "condition_checked",
+        "value": true
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "S",
+        "old": 0,
+        "new": 1
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "J",
+        "old": 1,
+        "new": 2
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "condition_checked",
+        "value": false
+      },
+      {
+        "event": "after_statement",
+        "statement": "while"
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "I",
+        "old": 1,
+        "new": 2
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "condition_checked",
+        "value": true
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "J",
+        "old": 2,
+        "new": 1
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "before_statement",
+        "statement": "while"
+      },
+      {
+        "event": "condition_checked",
+        "value": true
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "S",
+        "old": 1,
+        "new": 2
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "J",
+        "old": 1,
+        "new": 2
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "condition_checked",
+        "value": true
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "S",
+        "old": 2,
+        "new": 3
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "J",
+        "old": 2,
+        "new": 3
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "condition_checked",
+        "value": false
+      },
+      {
+        "event": "after_statement",
+        "statement": "while"
+      },
+      {
+        "event": "before_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "variable_changed",
+        "name": "I",
+        "old": 2,
+        "new": 3
+      },
+      {
+        "event": "after_statement",
+        "statement": "assign"
+      },
+      {
+        "event": "condition_checked",
+        "value": false
+      },
+      {
+        "event": "after_statement",
+        "statement": "while"
+      },
+      {
+        "event": "finished",
+        "state": {
+          "I": 3,
+          "J": 3,
+          "N": 2,
+          "S": 3
+        }
+      }
+    ]
+  }
+}

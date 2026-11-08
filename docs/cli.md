@@ -1,121 +1,49 @@
-# Командний рядок `sipl`
+# Командний рядок
 
-Код: `src/main.rs`, JSON-подання — `src/json.rs`, тести — `tests/cli.rs`.
+```
+sipl parse <файл>                       AST
+sipl check <файл>                       лише перевірка синтаксису
+sipl run   <файл> [X=1 ...]             кінцевий стан
+sipl trace <файл> [X=1 ...]             покрокове виконання
+sipl help
+```
 
-## Команди
-
-| Команда | Що робить | Текстовий вивід |
-|---|---|---|
-| `sipl parse <файл>` | розбирає програму | AST у вигляді S-виразу |
-| `sipl check <файл>` | лише перевіряє синтаксис | `синтаксис коректний` |
-| `sipl run <файл> [X=1 ...]` | виконує програму | кінцевий стан `[R ↦ 1024, X ↦ 2]` |
-| `sipl trace <файл> [X=1 ...]` | виконує й показує кожен крок | trace, див. [`trace.md`](trace.md) |
-| `sipl help` | показує довідку | |
-
-Параметри:
-
-| Параметр | Команди | Значення |
-|---|---|---|
-| `ЗМІННА=ЧИСЛО` | `run`, `trace` | початковий стан, можна кілька |
-| `--max-iterations N` | `run`, `trace` | ліміт ітерацій циклів, за замовчуванням 1 000 000 |
-| `--json` | усі | вивід одним JSON-об'єктом в один рядок |
+`run` і `trace` приймають `--max-iterations N` (за замовчуванням 1 000 000).
+Усі команди приймають `--json`.
 
 ## Коди завершення
 
-| Код | Значення |
-|---|---|
-| `0` | успіх |
-| `1` | синтаксична помилка в програмі |
-| `2` | неправильні аргументи або файл не читається |
-| `3` | помилка виконання: змінна без значення, переповнення, ліміт ітерацій |
+`0` — успіх, `1` — синтаксична помилка, `2` — неправильні аргументи або немає файлу,
+`3` — помилка виконання.
 
-Коди однакові в текстовому та JSON-режимі.
+## JSON
 
-## Текстовий режим
-
-Результат іде в stdout, помилки — у stderr з рядком, колонкою та підкресленням:
+З `--json` вивід завжди один рядок у stdout, навіть для помилок.
 
 ```
-помилка: змінна `Y` не має значення в поточному стані
- --> examples/power.sipl:3:9
-  |
-3 |   while Y > 0 do
-  |         ^
+parse  {"ok":true,"ast":{...}}
+check  {"ok":true}
+run    {"ok":true,"state":{"R":1024,"X":2,"Y":0}}
+trace  {"ok":true,"events":[...]}        див. trace.md
+error  {"ok":false,"error":{"kind":"syntax","message":"...","span":{...}}}
 ```
 
-## JSON-режим
+`kind`: `syntax`, `runtime`, `usage`, `file`. У `runtime` є ще `code`:
+`undefined_variable`, `overflow`, `iteration_limit_exceeded`.
 
-З `--json` усе, включно з помилками, іде в stdout одним рядком; stderr порожній.
-Кожна відповідь — об'єкт з полем `ok`.
+Позиція: `"span":{"start":{"line":3,"column":9},"end":{"line":3,"column":10}}`,
+рахунок з 1, `end` не включається.
 
-### Успіх
+Вузли AST мають `type` і `span`:
 
-| Команда | Відповідь |
-|---|---|
-| `parse` | `{"ok":true,"ast":{...}}` |
-| `check` | `{"ok":true}` |
-| `run` | `{"ok":true,"state":{"R":1024,"X":2,"Y":0}}` |
-| `trace` | `{"ok":true,"events":[...]}`, див. [`trace.md`](trace.md) |
-
-У `trace` поле `ok` дорівнює `false`, якщо програма впала під час виконання; тоді остання
-подія — `failed`, а код завершення — `3`.
-
-### Помилка
-
-```json
-{"ok":false,"error":{"kind":"...","message":"...", ...}}
+```
+program   body              if       condition, then, else
+assign    variable, value   while    condition, body
+sequence  first, second     block    body
+skip                        number   value
+variable  name              binary   op (+ - *), left, right
+compare   op (= >), left, right
+or        left, right       not      operand
 ```
 
-| `kind` | Додаткові поля | Код |
-|---|---|---|
-| `syntax` | `span` | `1` |
-| `usage` | — | `2` |
-| `file` | — | `2` |
-| `runtime` | `code`: `undefined_variable`, `overflow`, `iteration_limit_exceeded`; `span` | `3` |
-
-### Позиції
-
-```json
-"span":{"start":{"line":3,"column":9},"end":{"line":3,"column":10}}
-```
-
-`line` і `column` рахуються з 1, `column` — у символах, `end` не включається.
-
-### AST
-
-Кожен вузол має `type` і `span`.
-
-| `type` | Поля |
-|---|---|
-| `program` | `body` |
-| `assign` | `variable` (`name`, `span`), `value` |
-| `sequence` | `first`, `second` |
-| `if` | `condition`, `then`, `else` |
-| `while` | `condition`, `body` |
-| `block` | `body` |
-| `skip` | — |
-| `number` | `value` |
-| `variable` | `name` |
-| `binary` | `op` (`+`, `-`, `*`), `left`, `right` |
-| `compare` | `op` (`=`, `>`), `left`, `right` |
-| `or` | `left`, `right` |
-| `not` | `operand` |
-
-Приклад для `begin X := Y + 1 end` (без `span` для стислості):
-
-```json
-{"ok":true,"ast":{"type":"program","body":{"type":"assign","variable":{"name":"X"},
- "value":{"type":"binary","op":"+","left":{"type":"variable","name":"Y"},"right":{"type":"number","value":1}}}}}
-```
-
-## Стабільність
-
-Назви полів, значення `kind`, `code`, `type`, `event` і коди завершення — частина контракту:
-вони не змінюються в межах версії 0.x без запису в CHANGELOG. Нові поля можуть додаватися,
-тому споживачам варто ігнорувати невідомі ключі. Тексти повідомлень (`message`) — для людей,
-вони можуть змінюватися.
-
-## Тести
-
-`tests/cli.rs` запускає зібраний бінарник і перевіряє для кожної команди вивід, JSON
-та код завершення, включно з усіма видами помилок.
+Назви полів і кодів не змінюються, тексти `message` можуть змінюватися.
