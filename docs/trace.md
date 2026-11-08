@@ -52,14 +52,15 @@ sipl trace examples/power.sipl X=2 Y=1
        [R ↦ 2, X ↦ 2, Y ↦ 0]
 ```
 
-Код завершення: `0`, якщо остання подія `finished`, `1`, якщо `failed`.
+Код завершення: `0`, якщо остання подія `finished`, `3`, якщо `failed`.
 
 ## JSON
 
-`sipl trace ... --json` виводить один об'єкт в один рядок:
+`sipl trace ... --json` виводить один об'єкт в один рядок. `ok` дорівнює `true`, якщо
+програма завершилась (`finished`), і `false`, якщо впала (`failed`):
 
 ```json
-{"events":[
+{"ok":true,"events":[
   {"event":"before_statement","statement":"assign","span":{"start":{"line":2,"column":3},"end":{"line":2,"column":9}}},
   {"event":"variable_changed","name":"R","old":null,"new":1,"span":{...}},
   {"event":"after_statement","statement":"assign","span":{...}},

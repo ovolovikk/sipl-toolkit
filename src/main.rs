@@ -1,112 +1,197 @@
 use std::process::ExitCode;
 
-use sipl::ast::Program;
-use sipl::interpreter::DEFAULT_ITERATION_LIMIT;
-use sipl::trace::{Event, to_json, to_text, trace};
+use serde_json::{Value, json};
+use sipl::diagnostic::Diagnostic;
+use sipl::interpreter::{DEFAULT_ITERATION_LIMIT, RuntimeError};
+use sipl::json::{program_json, runtime_error_json, state_json, syntax_error_json};
+use sipl::trace::{finished, to_json, to_text, trace};
 use sipl::{State, parse_program, run_with_iteration_limit};
 
 const USAGE: &str = "використання:
-  sipl parse <файл.sipl>
-  sipl run <файл.sipl> [ЗМІННА=ЧИСЛО ...] [--max-iterations N]
-  sipl trace <файл.sipl> [ЗМІННА=ЧИСЛО ...] [--max-iterations N] [--json]";
+  sipl parse <файл.sipl> [--json]
+  sipl check <файл.sipl> [--json]
+  sipl run <файл.sipl> [ЗМІННА=ЧИСЛО ...] [--max-iterations N] [--json]
+  sipl trace <файл.sipl> [ЗМІННА=ЧИСЛО ...] [--max-iterations N] [--json]
+  sipl help";
 
-struct RunOptions {
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum Command {
+    Parse,
+    Check,
+    Run,
+    Trace,
+}
+
+struct Request {
+    command: Command,
+    path: String,
     state: State,
     iteration_limit: u64,
-    json: bool,
+}
+
+struct Source {
+    path: String,
+    text: String,
+}
+
+enum Output {
+    Ast(sipl::ast::Program),
+    Checked,
+    State(State),
+    Trace(Vec<sipl::trace::Event>),
+}
+
+enum Failure {
+    Usage(String),
+    File(String),
+    Syntax(Diagnostic),
+    Runtime(RuntimeError),
 }
 
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
-    let result = match args.first().map(String::as_str) {
-        Some("parse") if args.len() == 2 => parse_command(&args[1]),
-        Some("run") if args.len() >= 2 => run_command(&args[1], &args[2..]),
-        Some("trace") if args.len() >= 2 => trace_command(&args[1], &args[2..]),
-        _ => Err(usage_error("")),
+    if matches!(
+        args.first().map(String::as_str),
+        Some("help" | "--help" | "-h")
+    ) {
+        println!("{USAGE}");
+        return ExitCode::SUCCESS;
+    }
+    let json = args.iter().any(|arg| arg == "--json");
+    let request = match parse_request(&args) {
+        Ok(request) => request,
+        Err(failure) => return report_failure(&failure, None, json),
     };
-    result.unwrap_or_else(|code| code)
-}
-
-fn parse_command(path: &str) -> Result<ExitCode, ExitCode> {
-    let (_, program) = load(path)?;
-    println!("{program}");
-    Ok(ExitCode::SUCCESS)
-}
-
-fn run_command(path: &str, args: &[String]) -> Result<ExitCode, ExitCode> {
-    let options = parse_run_options(args, false)?;
-    let (src, program) = load(path)?;
-    match run_with_iteration_limit(&program, options.state, options.iteration_limit) {
-        Ok(state) => {
-            println!("{state}");
-            Ok(ExitCode::SUCCESS)
-        }
+    let source = match std::fs::read_to_string(&request.path) {
+        Ok(text) => Source {
+            path: request.path.clone(),
+            text,
+        },
         Err(err) => {
-            eprint!("{}", err.to_diagnostic().render(&src, path));
-            Err(ExitCode::FAILURE)
+            let message = format!("не вдалося прочитати `{}`: {err}", request.path);
+            return report_failure(&Failure::File(message), None, json);
         }
+    };
+    match execute(request, &source.text) {
+        Ok(output) => report_output(&output, &source, json),
+        Err(failure) => report_failure(&failure, Some(&source), json),
     }
 }
 
-fn trace_command(path: &str, args: &[String]) -> Result<ExitCode, ExitCode> {
-    let options = parse_run_options(args, true)?;
-    let (src, program) = load(path)?;
-    let events = trace(&program, options.state, options.iteration_limit);
-    if options.json {
-        println!("{}", to_json(&events, &src));
-    } else {
-        print!("{}", to_text(&events, &src));
-    }
-    match events.last() {
-        Some(Event::Finished { .. }) => Ok(ExitCode::SUCCESS),
-        _ => Err(ExitCode::FAILURE),
-    }
-}
-
-fn parse_run_options(args: &[String], allow_json: bool) -> Result<RunOptions, ExitCode> {
-    let mut options = RunOptions {
+fn parse_request(args: &[String]) -> Result<Request, Failure> {
+    let usage = |message: &str| Failure::Usage(message.to_string());
+    let args: Vec<&str> = args
+        .iter()
+        .map(String::as_str)
+        .filter(|&arg| arg != "--json")
+        .collect();
+    let command = match args.first().copied() {
+        Some("parse") => Command::Parse,
+        Some("check") => Command::Check,
+        Some("run") => Command::Run,
+        Some("trace") => Command::Trace,
+        Some(other) => return Err(usage(&format!("невідома команда `{other}`"))),
+        None => return Err(usage("не вказано команду")),
+    };
+    let path = match args.get(1) {
+        Some(path) if !path.starts_with("--") => path.to_string(),
+        _ => return Err(usage("не вказано файл програми")),
+    };
+    let executes = matches!(command, Command::Run | Command::Trace);
+    let mut request = Request {
+        command,
+        path,
         state: State::new(),
         iteration_limit: DEFAULT_ITERATION_LIMIT,
-        json: false,
     };
-    let mut rest = args.iter();
-    while let Some(arg) = rest.next() {
-        if arg == "--max-iterations" {
-            options.iteration_limit = rest
-                .next()
-                .and_then(|value| value.parse().ok())
-                .ok_or_else(|| {
-                    usage_error("після `--max-iterations` очікувалось додатне ціле число")
-                })?;
-        } else if arg == "--json" && allow_json {
-            options.json = true;
-        } else {
-            let (name, value) =
-                State::parse_binding(arg).map_err(|message| usage_error(&message))?;
-            options.state.set(&name, value);
+    let mut rest = args[2..].iter();
+    while let Some(&arg) = rest.next() {
+        match arg {
+            "--max-iterations" if executes => {
+                request.iteration_limit = rest
+                    .next()
+                    .and_then(|value| value.parse().ok())
+                    .ok_or_else(|| usage("після `--max-iterations` очікувалось ціле число"))?;
+            }
+            option if option.starts_with("--") => {
+                return Err(usage(&format!(
+                    "параметр `{option}` не підходить до цієї команди"
+                )));
+            }
+            _ if !executes => {
+                return Err(usage(&format!("`{}` не приймає початковий стан", args[0])));
+            }
+            binding => {
+                let (name, value) = State::parse_binding(binding).map_err(Failure::Usage)?;
+                request.state.set(&name, value);
+            }
         }
     }
-    Ok(options)
+    Ok(request)
 }
 
-fn load(path: &str) -> Result<(String, Program), ExitCode> {
-    let src = std::fs::read_to_string(path).map_err(|err| {
-        eprintln!("не вдалося прочитати `{path}`: {err}");
-        ExitCode::from(2)
-    })?;
-    match parse_program(&src) {
-        Ok(program) => Ok((src, program)),
-        Err(diagnostic) => {
-            eprint!("{}", diagnostic.render(&src, path));
-            Err(ExitCode::FAILURE)
+fn execute(request: Request, src: &str) -> Result<Output, Failure> {
+    let program = parse_program(src).map_err(Failure::Syntax)?;
+    match request.command {
+        Command::Parse => Ok(Output::Ast(program)),
+        Command::Check => Ok(Output::Checked),
+        Command::Run => run_with_iteration_limit(&program, request.state, request.iteration_limit)
+            .map(Output::State)
+            .map_err(Failure::Runtime),
+        Command::Trace => Ok(Output::Trace(trace(
+            &program,
+            request.state,
+            request.iteration_limit,
+        ))),
+    }
+}
+
+fn report_output(output: &Output, source: &Source, json: bool) -> ExitCode {
+    let src = &source.text;
+    if json {
+        let value = match output {
+            Output::Ast(program) => json!({ "ok": true, "ast": program_json(program, src) }),
+            Output::Checked => json!({ "ok": true }),
+            Output::State(state) => json!({ "ok": true, "state": state_json(state) }),
+            Output::Trace(events) => to_json(events, src),
+        };
+        println!("{value}");
+    } else {
+        match output {
+            Output::Ast(program) => println!("{program}"),
+            Output::Checked => println!("синтаксис коректний"),
+            Output::State(state) => println!("{state}"),
+            Output::Trace(events) => print!("{}", to_text(events, src)),
         }
     }
+    match output {
+        Output::Trace(events) if !finished(events) => ExitCode::from(3),
+        _ => ExitCode::SUCCESS,
+    }
 }
 
-fn usage_error(message: &str) -> ExitCode {
-    if !message.is_empty() {
-        eprintln!("помилка: {message}");
+fn report_failure(failure: &Failure, source: Option<&Source>, json: bool) -> ExitCode {
+    let src = source.map_or("", |source| source.text.as_str());
+    let path = source.map_or("", |source| source.path.as_str());
+    if json {
+        let error: Value = match failure {
+            Failure::Usage(message) => json!({ "kind": "usage", "message": message }),
+            Failure::File(message) => json!({ "kind": "file", "message": message }),
+            Failure::Syntax(diagnostic) => syntax_error_json(diagnostic, src),
+            Failure::Runtime(error) => runtime_error_json(error, src),
+        };
+        println!("{}", json!({ "ok": false, "error": error }));
+    } else {
+        match failure {
+            Failure::Usage(message) => eprintln!("помилка: {message}\n{USAGE}"),
+            Failure::File(message) => eprintln!("помилка: {message}"),
+            Failure::Syntax(diagnostic) => eprint!("{}", diagnostic.render(src, path)),
+            Failure::Runtime(error) => eprint!("{}", error.to_diagnostic().render(src, path)),
+        }
     }
-    eprintln!("{USAGE}");
-    ExitCode::from(2)
+    ExitCode::from(match failure {
+        Failure::Syntax(_) => 1,
+        Failure::Usage(_) | Failure::File(_) => 2,
+        Failure::Runtime(_) => 3,
+    })
 }

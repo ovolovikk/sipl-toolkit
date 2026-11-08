@@ -15,7 +15,7 @@
 | CORE-03 | Інтерпретатор зі станом і лімітом ітерацій, опис у [`docs/interpreter.md`](docs/interpreter.md) | 2.0 | готово |
 | REL-01 | CI: формат, clippy, тести, покриття, збірка пакета на кожен push і PR | 0.5 | готово |
 | CORE-04 | Події виконання та trace, текстом і в JSON, опис у [`docs/trace.md`](docs/trace.md) | 1.0 | готово |
-| CORE-05 | CLI: `parse`, `check`, `run`, `trace`, JSON-режим | 1.0 | |
+| CORE-05 | CLI: `parse`, `check`, `run`, `trace`, JSON-режим, опис у [`docs/cli.md`](docs/cli.md) | 1.0 | готово |
 | CORE-06 | Conformance suite | 1.0 | |
 | VIS-01 | Візуалізація дерева синтаксичного виводу | 1.5 | |
 | IDE-01 | VS Code extension: підсвітка синтаксису | 1.0 | |
@@ -73,8 +73,13 @@ cargo run -- trace examples/power.sipl X=2 Y=1
   |         ^
 ```
 
-Коди завершення: `0` — успіх, `1` — помилка в програмі SIPL, `2` — неправильні аргументи
-або файл не читається.
+Перевірити лише синтаксис: `sipl check <файл>`. Кожна команда приймає `--json` і тоді
+виводить один JSON-об'єкт в один рядок, включно з помилками.
+
+Коди завершення: `0` — успіх, `1` — синтаксична помилка, `2` — неправильні аргументи
+або файл не читається, `3` — помилка виконання.
+
+Повний опис команд, кодів і JSON-формату: [`docs/cli.md`](docs/cli.md).
 
 ## Тести
 
@@ -86,7 +91,9 @@ cargo test
 - `tests/fixtures/invalid/*.sipl` — некоректні програми, очікувана помилка у `*.err`;
 - `tests/fixtures/run/*.sipl` — програми для виконання: початковий стан у `*.in`,
   очікуваний результат у `*.out`;
-- `tests/fixtures/trace/*.sipl` — програми з початковим станом у `*.in`, очікуваний trace у `*.trace`.
+- `tests/fixtures/trace/*.sipl` — програми з початковим станом у `*.in`, очікуваний trace у `*.trace`;
+- `tests/cli.rs` — інтеграційні тести: запускають бінарник `sipl` і перевіряють вивід,
+  JSON і коди завершення.
 
 Після свідомої зміни формату виводу еталони перегенеровуються командою
 `SIPL_BLESS=1 cargo test --test fixtures`.
@@ -102,7 +109,7 @@ cargo test
 | `scripts/format.ps1` | форматування (`cargo fmt --check`) |
 | `scripts/lint.ps1` | типи та lint (`cargo clippy`, попередження = помилки) |
 | `scripts/test.ps1` | усі тести |
-| `scripts/coverage.ps1` | покриття ядра (`src/` без `main.rs`) не менше 80% рядків |
+| `scripts/coverage.ps1` | покриття тестами не менше 80% рядків |
 | `scripts/package.ps1` | збірка пакета `.crate` |
 | `scripts/ci.ps1` | усе вищенаведене по черзі |
 
@@ -111,7 +118,7 @@ pwsh scripts/ci.ps1
 ```
 
 Для покриття потрібен [cargo-llvm-cov](https://github.com/taiki-e/cargo-llvm-cov).
-Зараз ядро покрите на 99% рядків.
+Зараз покрито 99.6% рядків.
 
 ## Структура
 
@@ -125,6 +132,7 @@ src/diagnostic.rs      повідомлення про помилки
 src/state.rs           стан: змінна -> число
 src/interpreter.rs     виконання AST на стані
 src/trace.rs           події виконання, trace текстом і в JSON
+src/json.rs            JSON-подання AST, стану й помилок
 src/main.rs            командний рядок
 examples/              приклади програм
 tests/                 тести

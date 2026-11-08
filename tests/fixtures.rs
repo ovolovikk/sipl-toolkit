@@ -113,7 +113,8 @@ fn traces_match_golden_text_and_json_ends_with_result() {
             &mut failures,
         );
 
-        let json: serde_json::Value = serde_json::from_str(&to_json(&events, &src)).unwrap();
+        let json: serde_json::Value =
+            serde_json::from_str(&to_json(&events, &src).to_string()).unwrap();
         let last = json["events"].as_array().unwrap().last().unwrap();
         if !matches!(last["event"].as_str(), Some("finished" | "failed")) {
             failures.push(format!("{}\n  остання подія: {last}", path.display()));

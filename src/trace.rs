@@ -1,7 +1,8 @@
-use serde_json::{Map, Value, json};
+use serde_json::{Value, json};
 
 use crate::ast::{Program, StatementKind};
 use crate::interpreter::{RuntimeError, run_observed};
+use crate::json::{span_json, state_json};
 use crate::span::{Span, line_col};
 use crate::state::State;
 
@@ -88,9 +89,14 @@ pub fn trace(program: &Program, state: State, iteration_limit: u64) -> Vec<Event
     events
 }
 
-pub fn to_json(events: &[Event], src: &str) -> String {
+pub fn finished(events: &[Event]) -> bool {
+    matches!(events.last(), Some(Event::Finished { .. }))
+}
+
+pub fn to_json(events: &[Event], src: &str) -> Value {
+    let ok = finished(events);
     let events: Vec<Value> = events.iter().map(|event| event_json(event, src)).collect();
-    json!({ "events": events }).to_string()
+    json!({ "ok": ok, "events": events })
 }
 
 fn event_json(event: &Event, src: &str) -> Value {
@@ -133,23 +139,6 @@ fn event_json(event: &Event, src: &str) -> Value {
             "span": span_json(error.span, src),
         }),
     }
-}
-
-fn span_json(span: Span, src: &str) -> Value {
-    let start = line_col(src, span.start);
-    let end = line_col(src, span.end);
-    json!({
-        "start": { "line": start.line, "column": start.col },
-        "end": { "line": end.line, "column": end.col },
-    })
-}
-
-fn state_json(state: &State) -> Value {
-    let bindings: Map<String, Value> = state
-        .iter()
-        .map(|(name, value)| (name.to_string(), json!(value)))
-        .collect();
-    Value::Object(bindings)
 }
 
 pub fn to_text(events: &[Event], src: &str) -> String {
@@ -310,9 +299,9 @@ mod tests {
     fn json_is_one_line_with_positions() {
         let src = "begin\n  X := 1\nend";
         assert_eq!(
-            to_json(&events(src, State::new()), src),
+            to_json(&events(src, State::new()), src).to_string(),
             concat!(
-                r#"{"events":["#,
+                r#"{"ok":true,"events":["#,
                 r#"{"event":"before_statement","statement":"assign","span":{"start":{"line":2,"column":3},"end":{"line":2,"column":9}}},"#,
                 r#"{"event":"variable_changed","name":"X","old":null,"new":1,"span":{"start":{"line":2,"column":3},"end":{"line":2,"column":9}}},"#,
                 r#"{"event":"after_statement","statement":"assign","span":{"start":{"line":2,"column":3},"end":{"line":2,"column":9}}},"#,
@@ -325,14 +314,15 @@ mod tests {
     #[test]
     fn json_failure_and_condition() {
         let src = "begin if X = 0 then skip else skip end";
-        let json = to_json(&events(src, State::new()), src);
+        let json = to_json(&events(src, State::new()), src).to_string();
+        assert!(json.starts_with(r#"{"ok":false,"events":["#));
         assert!(json.ends_with(concat!(
             r#"{"event":"failed","error":"undefined_variable","#,
             r#""message":"змінна `X` не має значення в поточному стані","#,
             r#""span":{"start":{"line":1,"column":10},"end":{"line":1,"column":11}}}]}"#,
         )));
         let src = "begin if 1 = 1 then skip else skip end";
-        let json = to_json(&events(src, State::new()), src);
+        let json = to_json(&events(src, State::new()), src).to_string();
         assert!(json.contains(r#"{"event":"condition_checked","value":true,"#));
     }
 }
