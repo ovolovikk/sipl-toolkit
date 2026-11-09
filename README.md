@@ -19,7 +19,7 @@
 | REL-01 | CI | 0.5 | ✓ |
 | VIS-01 | дерево синтаксичного виводу, [`docs/tree.md`](docs/tree.md) | 1.5 | ✓ |
 | IDE-01 | підсвітка в VS Code, [`vscode-sipl/`](vscode-sipl/README.md) | 1.0 | ✓ |
-| REL-02 | релізи, CHANGELOG | 0.5 | |
+| REL-02 | релізи, [`CHANGELOG.md`](CHANGELOG.md) | 0.5 | ✓ |
 
 ## Запуск
 
@@ -46,6 +46,9 @@ pwsh scripts/ci.ps1     # те саме, що в CI: формат, clippy, те�
 ```
 
 Кожна перевірка — окремий скрипт у `scripts/` (PowerShell 7.4+).
+
+Реліз: додати версію в `CHANGELOG.md` і `Cargo.toml`, потім `git tag v0.1.0 && git push origin v0.1.0`.
+GitHub сам збере `sipl` для Linux, macOS, Windows і `.vsix` та створить реліз з нотатками з CHANGELOG.
 Еталони тестів оновлюються командою `SIPL_BLESS=1 cargo test --test fixtures`.
 
 ## Структура
