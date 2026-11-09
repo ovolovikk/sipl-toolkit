@@ -67,3 +67,4 @@ foreach ($case in $cases) {
 
 Write-Host "$($cases.Count - $failed) з $($cases.Count) тестів пройдено"
 if ($failed -gt 0) { throw "не пройдено тестів: $failed" }
+exit 0

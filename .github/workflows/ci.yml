@@ -8,11 +8,8 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: pwsh
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: dtolnay/rust-toolchain@stable
         with:
@@ -23,39 +20,44 @@ jobs:
       - uses: taiki-e/install-action@cargo-llvm-cov
 
       - name: Format
-        run: ./scripts/format.ps1
+        run: cargo fmt --check
 
       - name: Lint
-        run: ./scripts/lint.ps1
+        run: cargo clippy --all-targets --locked -- -D warnings
 
       - name: Test
-        run: ./scripts/test.ps1
+        run: cargo test --locked
 
       - name: Spec tests
-        run: ./scripts/spec-tests.ps1
+        run: pwsh scripts/spec-tests.ps1
 
       - name: Coverage
-        run: ./scripts/coverage.ps1
+        run: cargo llvm-cov --locked --summary-only --fail-under-lines 80
 
       - name: Package
-        run: ./scripts/package.ps1
+        run: cargo package --locked
 
   extension:
     runs-on: ubuntu-latest
     defaults:
       run:
-        shell: pwsh
+        working-directory: vscode-sipl
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
 
-      - name: Test and package
-        run: ./scripts/extension.ps1
+      - run: npm ci
 
-      - uses: actions/upload-artifact@v4
+      - name: Test
+        run: npm test
+
+      - name: Package
+        run: npx vsce package
+
+      - uses: actions/upload-artifact@v7
         with:
           name: vscode-sipl
           path: vscode-sipl/*.vsix
