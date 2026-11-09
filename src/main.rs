@@ -4,6 +4,7 @@ use serde_json::{Value, json};
 use sipl::diagnostic::Diagnostic;
 use sipl::interpreter::{DEFAULT_ITERATION_LIMIT, RuntimeError};
 use sipl::json::{program_json, runtime_error_json, state_json, syntax_error_json};
+use sipl::parse_tree::{ParseTree, parse_tree, to_dot, to_svg};
 use sipl::trace::{finished, to_json, to_text, trace};
 use sipl::{State, parse_program, run_with_iteration_limit};
 
@@ -12,6 +13,7 @@ const USAGE: &str = "використання:
   sipl check <файл.sipl> [--json]
   sipl run <файл.sipl> [ЗМІННА=ЧИСЛО ...] [--max-iterations N] [--json]
   sipl trace <файл.sipl> [ЗМІННА=ЧИСЛО ...] [--max-iterations N] [--json]
+  sipl tree <файл.sipl> [--json | --dot | --svg]
   sipl help";
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -20,6 +22,13 @@ enum Command {
     Check,
     Run,
     Trace,
+    Tree,
+}
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum Drawing {
+    Dot,
+    Svg,
 }
 
 struct Request {
@@ -27,6 +36,7 @@ struct Request {
     path: String,
     state: State,
     iteration_limit: u64,
+    drawing: Option<Drawing>,
 }
 
 struct Source {
@@ -39,6 +49,7 @@ enum Output {
     Checked,
     State(State),
     Trace(Vec<sipl::trace::Event>),
+    Tree(ParseTree, Option<Drawing>),
 }
 
 enum Failure {
@@ -80,6 +91,7 @@ fn main() -> ExitCode {
 
 fn parse_request(args: &[String]) -> Result<Request, Failure> {
     let usage = |message: &str| Failure::Usage(message.to_string());
+    let json = args.iter().any(|arg| arg == "--json");
     let args: Vec<&str> = args
         .iter()
         .map(String::as_str)
@@ -90,6 +102,7 @@ fn parse_request(args: &[String]) -> Result<Request, Failure> {
         Some("check") => Command::Check,
         Some("run") => Command::Run,
         Some("trace") => Command::Trace,
+        Some("tree") => Command::Tree,
         Some(other) => return Err(usage(&format!("невідома команда `{other}`"))),
         None => return Err(usage("не вказано команду")),
     };
@@ -103,6 +116,7 @@ fn parse_request(args: &[String]) -> Result<Request, Failure> {
         path,
         state: State::new(),
         iteration_limit: DEFAULT_ITERATION_LIMIT,
+        drawing: None,
     };
     let mut rest = args[2..].iter();
     while let Some(&arg) = rest.next() {
@@ -112,6 +126,16 @@ fn parse_request(args: &[String]) -> Result<Request, Failure> {
                     .next()
                     .and_then(|value| value.parse().ok())
                     .ok_or_else(|| usage("після `--max-iterations` очікувалось ціле число"))?;
+            }
+            "--dot" | "--svg" if command == Command::Tree => {
+                if json || request.drawing.is_some() {
+                    return Err(usage("оберіть один формат: `--json`, `--dot` або `--svg`"));
+                }
+                request.drawing = Some(if arg == "--dot" {
+                    Drawing::Dot
+                } else {
+                    Drawing::Svg
+                });
             }
             option if option.starts_with("--") => {
                 return Err(usage(&format!(
@@ -143,6 +167,7 @@ fn execute(request: Request, src: &str) -> Result<Output, Failure> {
             request.state,
             request.iteration_limit,
         ))),
+        Command::Tree => Ok(Output::Tree(parse_tree(&program, src), request.drawing)),
     }
 }
 
@@ -154,6 +179,9 @@ fn report_output(output: &Output, source: &Source, json: bool) -> ExitCode {
             Output::Checked => json!({ "ok": true }),
             Output::State(state) => json!({ "ok": true, "state": state_json(state) }),
             Output::Trace(events) => to_json(events, src),
+            Output::Tree(tree, _) => {
+                json!({ "ok": true, "tree": sipl::parse_tree::to_json(tree, src) })
+            }
         };
         println!("{value}");
     } else {
@@ -162,6 +190,9 @@ fn report_output(output: &Output, source: &Source, json: bool) -> ExitCode {
             Output::Checked => println!("синтаксис коректний"),
             Output::State(state) => println!("{state}"),
             Output::Trace(events) => print!("{}", to_text(events, src)),
+            Output::Tree(tree, None) => print!("{}", sipl::parse_tree::to_text(tree, src)),
+            Output::Tree(tree, Some(Drawing::Dot)) => print!("{}", to_dot(tree, src)),
+            Output::Tree(tree, Some(Drawing::Svg)) => print!("{}", to_svg(tree, src)),
         }
     }
     match output {

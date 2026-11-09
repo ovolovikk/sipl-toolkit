@@ -5,6 +5,7 @@ sipl parse <файл>                       AST
 sipl check <файл>                       лише перевірка синтаксису
 sipl run   <файл> [X=1 ...]             кінцевий стан
 sipl trace <файл> [X=1 ...]             покрокове виконання
+sipl tree  <файл> [--dot | --svg]       дерево виводу, див. tree.md
 sipl help
 ```
 
@@ -25,6 +26,7 @@ parse  {"ok":true,"ast":{...}}
 check  {"ok":true}
 run    {"ok":true,"state":{"R":1024,"X":2,"Y":0}}
 trace  {"ok":true,"events":[...]}        див. trace.md
+tree   {"ok":true,"tree":{...}}          див. tree.md
 error  {"ok":false,"error":{"kind":"syntax","message":"...","span":{...}}}
 ```
 

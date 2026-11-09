@@ -237,3 +237,49 @@ fn missing_file_exits_with_2() {
     assert_eq!(code, 2);
     assert_eq!(json["error"]["kind"], "file");
 }
+
+#[test]
+fn tree_in_every_format() {
+    let outcome = sipl(&["tree", POWER]);
+    assert_eq!(outcome.code, 0);
+    assert!(
+        outcome
+            .stdout
+            .starts_with("<програма> NP1  1:1  begin…\n├── begin\n")
+    );
+    assert!(outcome.stdout.ends_with(
+        "Листки зліва направо: 1 begin 2 R 3 := 4 1 5 ; 6 while 7 Y 8 > 9 0 10 do 11 begin 12 R 13 := 14 R 15 * 16 X 17 ; 18 Y 19 := 20 Y 21 - 22 1 23 end 24 end\n"
+    ));
+
+    let (code, json) = sipl_json(&["tree", POWER]);
+    assert_eq!(code, 0);
+    assert_eq!(json["ok"], true);
+    assert_eq!(json["tree"]["symbol"], "<програма>");
+    assert_eq!(json["tree"]["children"][1]["rule"], "NS2");
+
+    let outcome = sipl(&["tree", POWER, "--dot"]);
+    assert_eq!(outcome.code, 0);
+    assert!(outcome.stdout.starts_with("digraph parse_tree {\n"));
+
+    let outcome = sipl(&["tree", POWER, "--svg"]);
+    assert_eq!(outcome.code, 0);
+    assert!(outcome.stdout.starts_with("<svg "));
+
+    let (code, json) = sipl_json(&["tree", TRAILING_SEMICOLON]);
+    assert_eq!(code, 1);
+    assert_eq!(json["error"]["kind"], "syntax");
+}
+
+#[test]
+fn tree_formats_are_exclusive() {
+    for args in [
+        &["tree", POWER, "--dot", "--svg"][..],
+        &["tree", POWER, "--svg", "--json"],
+        &["run", POWER, "--dot"],
+    ] {
+        let outcome = sipl(args);
+        assert_eq!(outcome.code, 2, "{args:?}");
+    }
+    let outcome = sipl(&["tree", POWER, "--dot", "--svg"]);
+    assert!(outcome.stderr.contains("оберіть один формат"));
+}

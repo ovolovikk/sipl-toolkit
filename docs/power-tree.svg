@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1464" height="638" viewBox="0 0 1464 638" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">
+<style>.rule rect{fill:#eef3f8;stroke:#4b6584}.rule text{fill:#1e2a38;font-size:12px}.rule .name{fill:#5b6b7c;font-size:10px}.leaf text{fill:#a33d2a;font-family:Menlo,Consolas,monospace;font-size:14px}.leaf .order{fill:#8a96a3;font-family:Helvetica,Arial,sans-serif;font-size:10px}line{stroke:#9aa5b1}</style>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<line x1="732.2" y1="54.0" x2="47.2" y2="84.0"/>
+<line x1="122.5" y1="246.0" x2="122.5" y2="276.0"/>
+<line x1="181.2" y1="182.0" x2="122.5" y2="212.0"/>
+<line x1="181.2" y1="182.0" x2="185.0" y2="212.0"/>
+<line x1="243.8" y1="310.0" x2="243.8" y2="340.0"/>
+<line x1="243.8" y1="246.0" x2="243.8" y2="276.0"/>
+<line x1="181.2" y1="182.0" x2="243.8" y2="212.0"/>
+<line x1="740.8" y1="118.0" x2="181.2" y2="148.0"/>
+<line x1="740.8" y1="118.0" x2="298.2" y2="148.0"/>
+<line x1="857.8" y1="182.0" x2="345.8" y2="212.0"/>
+<line x1="421.0" y1="374.0" x2="421.0" y2="404.0"/>
+<line x1="421.0" y1="310.0" x2="421.0" y2="340.0"/>
+<line x1="475.5" y1="246.0" x2="421.0" y2="276.0"/>
+<line x1="475.5" y1="246.0" x2="479.2" y2="276.0"/>
+<line x1="533.8" y1="374.0" x2="533.8" y2="404.0"/>
+<line x1="533.8" y1="310.0" x2="533.8" y2="340.0"/>
+<line x1="475.5" y1="246.0" x2="533.8" y2="276.0"/>
+<line x1="857.8" y1="182.0" x2="475.5" y2="212.0"/>
+<line x1="857.8" y1="182.0" x2="592.5" y2="212.0"/>
+<line x1="1007.0" y1="246.0" x2="644.2" y2="276.0"/>
+<line x1="719.5" y1="438.0" x2="719.5" y2="468.0"/>
+<line x1="840.2" y1="374.0" x2="719.5" y2="404.0"/>
+<line x1="840.2" y1="374.0" x2="782.0" y2="404.0"/>
+<line x1="844.5" y1="566.0" x2="844.5" y2="596.0"/>
+<line x1="844.5" y1="502.0" x2="844.5" y2="532.0"/>
+<line x1="902.8" y1="438.0" x2="844.5" y2="468.0"/>
+<line x1="902.8" y1="438.0" x2="902.8" y2="468.0"/>
+<line x1="961.0" y1="566.0" x2="961.0" y2="596.0"/>
+<line x1="961.0" y1="502.0" x2="961.0" y2="532.0"/>
+<line x1="902.8" y1="438.0" x2="961.0" y2="468.0"/>
+<line x1="840.2" y1="374.0" x2="902.8" y2="404.0"/>
+<line x1="1015.5" y1="310.0" x2="840.2" y2="340.0"/>
+<line x1="1015.5" y1="310.0" x2="1019.2" y2="340.0"/>
+<line x1="1077.5" y1="438.0" x2="1077.5" y2="468.0"/>
+<line x1="1194.5" y1="374.0" x2="1077.5" y2="404.0"/>
+<line x1="1194.5" y1="374.0" x2="1140.0" y2="404.0"/>
+<line x1="1202.5" y1="566.0" x2="1202.5" y2="596.0"/>
+<line x1="1202.5" y1="502.0" x2="1202.5" y2="532.0"/>
+<line x1="1257.0" y1="438.0" x2="1202.5" y2="468.0"/>
+<line x1="1257.0" y1="438.0" x2="1260.8" y2="468.0"/>
+<line x1="1315.2" y1="566.0" x2="1315.2" y2="596.0"/>
+<line x1="1315.2" y1="502.0" x2="1315.2" y2="532.0"/>
+<line x1="1257.0" y1="438.0" x2="1315.2" y2="468.0"/>
+<line x1="1194.5" y1="374.0" x2="1257.0" y2="404.0"/>
+<line x1="1015.5" y1="310.0" x2="1194.5" y2="340.0"/>
+<line x1="1007.0" y1="246.0" x2="1015.5" y2="276.0"/>
+<line x1="1007.0" y1="246.0" x2="1378.2" y2="276.0"/>
+<line x1="857.8" y1="182.0" x2="1007.0" y2="212.0"/>
+<line x1="740.8" y1="118.0" x2="857.8" y2="148.0"/>
+<line x1="732.2" y1="54.0" x2="740.8" y2="84.0"/>
+<line x1="732.2" y1="54.0" x2="1425.8" y2="84.0"/>
+<g class="rule"><title>1:1  begin…</title><rect x="686.8" y="20.0" width="91.0" height="34.0" rx="6"/><text x="732.2" y="34.0">&lt;програма&gt;</text><text class="name" x="732.2" y="48.0">NP1</text></g>
+<g class="leaf"><title>1:1  begin</title><text x="47.2" y="100.0">begin</text><text class="order" x="47.2" y="116.0">1</text></g>
+<g class="rule"><title>2:3  R := 1;…</title><rect x="695.2" y="84.0" width="91.0" height="34.0" rx="6"/><text x="740.8" y="98.0">&lt;оператор&gt;</text><text class="name" x="740.8" y="112.0">NS2</text></g>
+<g class="rule"><title>2:3  R := 1</title><rect x="135.8" y="148.0" width="91.0" height="34.0" rx="6"/><text x="181.2" y="162.0">&lt;оператор&gt;</text><text class="name" x="181.2" y="176.0">NS1</text></g>
+<g class="rule"><title>2:3  R</title><rect x="84.5" y="212.0" width="76.0" height="34.0" rx="6"/><text x="122.5" y="226.0">&lt;змінна&gt;</text><text class="name" x="122.5" y="240.0">NV</text></g>
+<g class="leaf"><title>2:3  R</title><text x="122.5" y="292.0">R</text><text class="order" x="122.5" y="308.0">2</text></g>
+<g class="leaf"><title>2:5  :=</title><text x="185.0" y="228.0">:=</text><text class="order" x="185.0" y="244.0">3</text></g>
+<g class="rule"><title>2:8  1</title><rect x="209.5" y="212.0" width="68.5" height="34.0" rx="6"/><text x="243.8" y="226.0">&lt;вираз&gt;</text><text class="name" x="243.8" y="240.0">NA1</text></g>
+<g class="rule"><title>2:8  1</title><rect x="209.5" y="276.0" width="68.5" height="34.0" rx="6"/><text x="243.8" y="290.0">&lt;число&gt;</text><text class="name" x="243.8" y="304.0">NN</text></g>
+<g class="leaf"><title>2:8  1</title><text x="243.8" y="356.0">1</text><text class="order" x="243.8" y="372.0">4</text></g>
+<g class="leaf"><title>2:9  ;</title><text x="298.2" y="164.0">;</text><text class="order" x="298.2" y="180.0">5</text></g>
+<g class="rule"><title>3:3  while Y &gt; 0 do…</title><rect x="812.2" y="148.0" width="91.0" height="34.0" rx="6"/><text x="857.8" y="162.0">&lt;оператор&gt;</text><text class="name" x="857.8" y="176.0">NS4</text></g>
+<g class="leaf"><title>3:3  while</title><text x="345.8" y="228.0">while</text><text class="order" x="345.8" y="244.0">6</text></g>
+<g class="rule"><title>3:9  Y &gt; 0</title><rect x="441.2" y="212.0" width="68.5" height="34.0" rx="6"/><text x="475.5" y="226.0">&lt;умова&gt;</text><text class="name" x="475.5" y="240.0">NB2</text></g>
+<g class="rule"><title>3:9  Y</title><rect x="386.8" y="276.0" width="68.5" height="34.0" rx="6"/><text x="421.0" y="290.0">&lt;вираз&gt;</text><text class="name" x="421.0" y="304.0">NA2</text></g>
+<g class="rule"><title>3:9  Y</title><rect x="383.0" y="340.0" width="76.0" height="34.0" rx="6"/><text x="421.0" y="354.0">&lt;змінна&gt;</text><text class="name" x="421.0" y="368.0">NV</text></g>
+<g class="leaf"><title>3:9  Y</title><text x="421.0" y="420.0">Y</text><text class="order" x="421.0" y="436.0">7</text></g>
+<g class="leaf"><title>3:11  &gt;</title><text x="479.2" y="292.0">&gt;</text><text class="order" x="479.2" y="308.0">8</text></g>
+<g class="rule"><title>3:13  0</title><rect x="499.5" y="276.0" width="68.5" height="34.0" rx="6"/><text x="533.8" y="290.0">&lt;вираз&gt;</text><text class="name" x="533.8" y="304.0">NA1</text></g>
+<g class="rule"><title>3:13  0</title><rect x="499.5" y="340.0" width="68.5" height="34.0" rx="6"/><text x="533.8" y="354.0">&lt;число&gt;</text><text class="name" x="533.8" y="368.0">NN</text></g>
+<g class="leaf"><title>3:13  0</title><text x="533.8" y="420.0">0</text><text class="order" x="533.8" y="436.0">9</text></g>
+<g class="leaf"><title>3:15  do</title><text x="592.5" y="228.0">do</text><text class="order" x="592.5" y="244.0">10</text></g>
+<g class="rule"><title>4:3  begin…</title><rect x="961.5" y="212.0" width="91.0" height="34.0" rx="6"/><text x="1007.0" y="226.0">&lt;оператор&gt;</text><text class="name" x="1007.0" y="240.0">NS5</text></g>
+<g class="leaf"><title>4:3  begin</title><text x="644.2" y="292.0">begin</text><text class="order" x="644.2" y="308.0">11</text></g>
+<g class="rule"><title>5:5  R := R * X;…</title><rect x="970.0" y="276.0" width="91.0" height="34.0" rx="6"/><text x="1015.5" y="290.0">&lt;оператор&gt;</text><text class="name" x="1015.5" y="304.0">NS2</text></g>
+<g class="rule"><title>5:5  R := R * X</title><rect x="794.8" y="340.0" width="91.0" height="34.0" rx="6"/><text x="840.2" y="354.0">&lt;оператор&gt;</text><text class="name" x="840.2" y="368.0">NS1</text></g>
+<g class="rule"><title>5:5  R</title><rect x="681.5" y="404.0" width="76.0" height="34.0" rx="6"/><text x="719.5" y="418.0">&lt;змінна&gt;</text><text class="name" x="719.5" y="432.0">NV</text></g>
+<g class="leaf"><title>5:5  R</title><text x="719.5" y="484.0">R</text><text class="order" x="719.5" y="500.0">12</text></g>
+<g class="leaf"><title>5:7  :=</title><text x="782.0" y="420.0">:=</text><text class="order" x="782.0" y="436.0">13</text></g>
+<g class="rule"><title>5:10  R * X</title><rect x="868.5" y="404.0" width="68.5" height="34.0" rx="6"/><text x="902.8" y="418.0">&lt;вираз&gt;</text><text class="name" x="902.8" y="432.0">NA5</text></g>
+<g class="rule"><title>5:10  R</title><rect x="810.2" y="468.0" width="68.5" height="34.0" rx="6"/><text x="844.5" y="482.0">&lt;вираз&gt;</text><text class="name" x="844.5" y="496.0">NA2</text></g>
+<g class="rule"><title>5:10  R</title><rect x="806.5" y="532.0" width="76.0" height="34.0" rx="6"/><text x="844.5" y="546.0">&lt;змінна&gt;</text><text class="name" x="844.5" y="560.0">NV</text></g>
+<g class="leaf"><title>5:10  R</title><text x="844.5" y="612.0">R</text><text class="order" x="844.5" y="628.0">14</text></g>
+<g class="leaf"><title>5:12  *</title><text x="902.8" y="484.0">*</text><text class="order" x="902.8" y="500.0">15</text></g>
+<g class="rule"><title>5:14  X</title><rect x="926.8" y="468.0" width="68.5" height="34.0" rx="6"/><text x="961.0" y="482.0">&lt;вираз&gt;</text><text class="name" x="961.0" y="496.0">NA2</text></g>
+<g class="rule"><title>5:14  X</title><rect x="923.0" y="532.0" width="76.0" height="34.0" rx="6"/><text x="961.0" y="546.0">&lt;змінна&gt;</text><text class="name" x="961.0" y="560.0">NV</text></g>
+<g class="leaf"><title>5:14  X</title><text x="961.0" y="612.0">X</text><text class="order" x="961.0" y="628.0">16</text></g>
+<g class="leaf"><title>5:15  ;</title><text x="1019.2" y="356.0">;</text><text class="order" x="1019.2" y="372.0">17</text></g>
+<g class="rule"><title>6:5  Y := Y - 1</title><rect x="1149.0" y="340.0" width="91.0" height="34.0" rx="6"/><text x="1194.5" y="354.0">&lt;оператор&gt;</text><text class="name" x="1194.5" y="368.0">NS1</text></g>
+<g class="rule"><title>6:5  Y</title><rect x="1039.5" y="404.0" width="76.0" height="34.0" rx="6"/><text x="1077.5" y="418.0">&lt;змінна&gt;</text><text class="name" x="1077.5" y="432.0">NV</text></g>
+<g class="leaf"><title>6:5  Y</title><text x="1077.5" y="484.0">Y</text><text class="order" x="1077.5" y="500.0">18</text></g>
+<g class="leaf"><title>6:7  :=</title><text x="1140.0" y="420.0">:=</text><text class="order" x="1140.0" y="436.0">19</text></g>
+<g class="rule"><title>6:10  Y - 1</title><rect x="1222.8" y="404.0" width="68.5" height="34.0" rx="6"/><text x="1257.0" y="418.0">&lt;вираз&gt;</text><text class="name" x="1257.0" y="432.0">NA4</text></g>
+<g class="rule"><title>6:10  Y</title><rect x="1168.2" y="468.0" width="68.5" height="34.0" rx="6"/><text x="1202.5" y="482.0">&lt;вираз&gt;</text><text class="name" x="1202.5" y="496.0">NA2</text></g>
+<g class="rule"><title>6:10  Y</title><rect x="1164.5" y="532.0" width="76.0" height="34.0" rx="6"/><text x="1202.5" y="546.0">&lt;змінна&gt;</text><text class="name" x="1202.5" y="560.0">NV</text></g>
+<g class="leaf"><title>6:10  Y</title><text x="1202.5" y="612.0">Y</text><text class="order" x="1202.5" y="628.0">20</text></g>
+<g class="leaf"><title>6:12  -</title><text x="1260.8" y="484.0">-</text><text class="order" x="1260.8" y="500.0">21</text></g>
+<g class="rule"><title>6:14  1</title><rect x="1281.0" y="468.0" width="68.5" height="34.0" rx="6"/><text x="1315.2" y="482.0">&lt;вираз&gt;</text><text class="name" x="1315.2" y="496.0">NA1</text></g>
+<g class="rule"><title>6:14  1</title><rect x="1281.0" y="532.0" width="68.5" height="34.0" rx="6"/><text x="1315.2" y="546.0">&lt;число&gt;</text><text class="name" x="1315.2" y="560.0">NN</text></g>
+<g class="leaf"><title>6:14  1</title><text x="1315.2" y="612.0">1</text><text class="order" x="1315.2" y="628.0">22</text></g>
+<g class="leaf"><title>7:3  end</title><text x="1378.2" y="292.0">end</text><text class="order" x="1378.2" y="308.0">23</text></g>
+<g class="leaf"><title>8:1  end</title><text x="1425.8" y="100.0">end</text><text class="order" x="1425.8" y="116.0">24</text></g>
+</svg>

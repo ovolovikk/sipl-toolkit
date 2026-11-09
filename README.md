@@ -17,7 +17,7 @@
 | CORE-05 | командний рядок, [`docs/cli.md`](docs/cli.md) | 1.0 | ✓ |
 | CORE-06 | тести специфікації, [`spec-tests/`](spec-tests/README.md) | 1.0 | ✓ |
 | REL-01 | CI | 0.5 | ✓ |
-| VIS-01 | дерево синтаксичного виводу | 1.5 | |
+| VIS-01 | дерево синтаксичного виводу, [`docs/tree.md`](docs/tree.md) | 1.5 | ✓ |
 | IDE-01 | підсвітка в VS Code, [`vscode-sipl/`](vscode-sipl/README.md) | 1.0 | ✓ |
 | REL-02 | релізи, CHANGELOG | 0.5 | |
 
@@ -33,7 +33,7 @@ cargo run -- run examples/power.sipl X=2 Y=10
 [R ↦ 1024, X ↦ 2, Y ↦ 0]
 ```
 
-Інші команди: `parse`, `check`, `trace`, усі з `--json`. Див. [`docs/cli.md`](docs/cli.md).
+Інші команди: `parse`, `check`, `trace`, `tree` (дерево виводу, також `--dot` і `--svg`), усі з `--json`. Див. [`docs/cli.md`](docs/cli.md).
 
 Розширення для VS Code: `pwsh scripts/extension.ps1` збирає `vscode-sipl/sipl-0.1.0.vsix`,
 далі `code --install-extension vscode-sipl/sipl-0.1.0.vsix`. Потрібен Node.js 22+.
@@ -52,7 +52,7 @@ pwsh scripts/ci.ps1     # те саме, що в CI: формат, clippy, те�
 
 ```
 grammar/      граматика
-src/          lexer → parser → ast → interpreter → trace, json, main (CLI)
+src/          lexer → parser → ast → interpreter → trace, parse_tree, json, main (CLI)
 tests/        модульні, еталонні та інтеграційні тести
 spec-tests/   тести специфікації, незалежні від реалізації
 examples/     приклади програм

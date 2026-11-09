@@ -2,6 +2,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 use sipl::interpreter::DEFAULT_ITERATION_LIMIT;
+use sipl::parse_tree::{ParseTree, parse_tree, to_text as parse_tree_text};
 use sipl::trace::{to_json, to_text, trace};
 
 fn sipl_files(dir: &str) -> Vec<PathBuf> {
@@ -58,6 +59,49 @@ fn valid_programs_match_golden_ast() {
                 err.short(&src)
             )),
         }
+    }
+    assert!(failures.is_empty(), "\n{}", failures.join("\n"));
+}
+
+fn without_spaces(text: &str) -> String {
+    text.chars().filter(|c| !c.is_whitespace()).collect()
+}
+
+fn check_leaves_spell_every_node(
+    tree: &ParseTree,
+    src: &str,
+    path: &Path,
+    failures: &mut Vec<String>,
+) {
+    if let ParseTree::Rule { span, children, .. } = tree {
+        let leaves = tree.leaves().concat();
+        let text = &src[span.start..span.end];
+        if without_spaces(&leaves) != without_spaces(text) {
+            failures.push(format!(
+                "{}\n  `{text}` ≠ листки `{leaves}`",
+                path.display()
+            ));
+        }
+        for child in children {
+            check_leaves_spell_every_node(child, src, path, failures);
+        }
+    }
+}
+
+#[test]
+fn parse_trees_match_golden_and_leaves_spell_the_program() {
+    let files = sipl_files("valid");
+    let mut failures = Vec::new();
+    for path in &files {
+        let src = fs::read_to_string(path).unwrap();
+        let tree = parse_tree(&sipl::parse_program(&src).unwrap(), &src);
+        check_golden(
+            path,
+            "tree",
+            parse_tree_text(&tree, &src).trim_end(),
+            &mut failures,
+        );
+        check_leaves_spell_every_node(&tree, &src, path, &mut failures);
     }
     assert!(failures.is_empty(), "\n{}", failures.join("\n"));
 }

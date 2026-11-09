@@ -3,6 +3,7 @@ pub mod diagnostic;
 pub mod interpreter;
 pub mod json;
 pub mod lexer;
+pub mod parse_tree;
 pub mod parser;
 pub mod span;
 pub mod state;

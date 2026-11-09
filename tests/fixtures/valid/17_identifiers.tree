@@ -1,0 +1,17 @@
+<програма> NP1  1:1  begin Counter_1 := counter_1 + 1…
+├── begin
+├── <оператор> NS1  1:7  Counter_1 := counter_1 + 1
+│   ├── <змінна> NV  1:7  Counter_1
+│   │   └── Counter_1
+│   ├── :=
+│   └── <вираз> NA3  1:20  counter_1 + 1
+│       ├── <вираз> NA2  1:20  counter_1
+│       │   └── <змінна> NV  1:20  counter_1
+│       │       └── counter_1
+│       ├── +
+│       └── <вираз> NA1  1:32  1
+│           └── <число> NN  1:32  1
+│               └── 1
+└── end
+
+Листки зліва направо: 1 begin 2 Counter_1 3 := 4 counter_1 5 + 6 1 7 end

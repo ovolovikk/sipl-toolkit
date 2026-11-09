@@ -1,0 +1,7 @@
+<програма> NP1  1:1  begin skip end
+├── begin
+├── <оператор> NS6  1:7  skip
+│   └── skip
+└── end
+
+Листки зліва направо: 1 begin 2 skip 3 end
