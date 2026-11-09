@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ovolovikk/sipl-toolkit"
+    "url": "https://github.com/ovolovikk/sipl-rust"
   },
   "engines": {
     "vscode": "^1.80.0"

@@ -7,19 +7,19 @@
 **Мова SIPL з «Теорії програмування»: розібрати, виконати, простежити, намалювати.**
 <br>Написано на Rust, один бінарник без залежностей.
 
-[![CI](https://github.com/ovolovikk/sipl-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/ovolovikk/sipl-toolkit/actions/workflows/ci.yml)
-[![release](https://img.shields.io/github/v/release/ovolovikk/sipl-toolkit)](https://github.com/ovolovikk/sipl-toolkit/releases/latest)
+[![CI](https://github.com/ovolovikk/sipl-rust/actions/workflows/ci.yml/badge.svg)](https://github.com/ovolovikk/sipl-rust/actions/workflows/ci.yml)
+[![release](https://img.shields.io/github/v/release/ovolovikk/sipl-rust)](https://github.com/ovolovikk/sipl-rust/releases/latest)
 [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 </div>
 
 ## Спробувати
 
-Готовий бінарник для Linux, macOS і Windows лежить на сторінці [релізу](https://github.com/ovolovikk/sipl-toolkit/releases/latest).
+Готовий бінарник для Linux, macOS і Windows лежить на сторінці [релізу](https://github.com/ovolovikk/sipl-rust/releases/latest).
 Або можна зібрати з коду:
 
 ```bash
-cargo install --git https://github.com/ovolovikk/sipl-toolkit
+cargo install --git https://github.com/ovolovikk/sipl-rust
 sipl run examples/power.sipl X=2 Y=10
 ```
 
