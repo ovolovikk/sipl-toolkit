@@ -1,0 +1,56 @@
+{
+  "name": "sipl",
+  "displayName": "SIPL",
+  "description": "Syntax highlighting and snippets for SIPL, a simple teaching programming language",
+  "version": "0.1.0",
+  "publisher": "ovolovikk",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ovolovikk/sipl-toolkit"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "sipl",
+        "aliases": [
+          "SIPL",
+          "sipl"
+        ],
+        "extensions": [
+          ".sipl"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "sipl",
+        "scopeName": "source.sipl",
+        "path": "./syntaxes/sipl.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "sipl",
+        "path": "./snippets/sipl.json"
+      }
+    ]
+  },
+  "scripts": {
+    "test": "node --test test/grammar.test.mjs",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^4.1.0",
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.3.2"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "SIPL",
+  "scopeName": "source.sipl",
+  "patterns": [
+    { "include": "#block" },
+    { "include": "#control" },
+    { "include": "#logical" },
+    { "include": "#assignment" },
+    { "include": "#comparison" },
+    { "include": "#arithmetic" },
+    { "include": "#number" },
+    { "include": "#variable" },
+    { "include": "#punctuation" },
+    { "include": "#invalid" }
+  ],
+  "repository": {
+    "block": {
+      "name": "keyword.control.block.sipl",
+      "match": "\\b(begin|end)\\b"
+    },
+    "control": {
+      "name": "keyword.control.sipl",
+      "match": "\\b(if|then|else|while|do|skip)\\b"
+    },
+    "logical": {
+      "name": "keyword.operator.logical.sipl",
+      "match": "\\b(or|not)\\b|∨|¬"
+    },
+    "assignment": {
+      "name": "keyword.operator.assignment.sipl",
+      "match": ":="
+    },
+    "comparison": {
+      "name": "keyword.operator.comparison.sipl",
+      "match": "=|>"
+    },
+    "arithmetic": {
+      "name": "keyword.operator.arithmetic.sipl",
+      "match": "[+*\\-–−∗×]"
+    },
+    "number": {
+      "name": "constant.numeric.integer.sipl",
+      "match": "\\b[0-9]+\\b"
+    },
+    "variable": {
+      "name": "variable.other.sipl",
+      "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+    },
+    "punctuation": {
+      "patterns": [
+        { "name": "punctuation.separator.statement.sipl", "match": ";" },
+        { "name": "punctuation.section.parens.begin.sipl", "match": "\\(" },
+        { "name": "punctuation.section.parens.end.sipl", "match": "\\)" }
+      ]
+    },
+    "invalid": {
+      "name": "invalid.illegal.sipl",
+      "match": "[^\\s]"
+    }
+  }
+}

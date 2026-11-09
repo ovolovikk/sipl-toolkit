@@ -39,3 +39,23 @@ jobs:
 
       - name: Package
         run: ./scripts/package.ps1
+
+  extension:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Test and package
+        run: ./scripts/extension.ps1
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vscode-sipl
+          path: vscode-sipl/*.vsix

@@ -1,0 +1,17 @@
+{
+  "brackets": [
+    ["begin", "end"],
+    ["(", ")"]
+  ],
+  "autoClosingPairs": [
+    { "open": "(", "close": ")" }
+  ],
+  "surroundingPairs": [
+    ["(", ")"]
+  ],
+  "wordPattern": "[A-Za-z_][A-Za-z0-9_]*|-?[0-9]+",
+  "indentationRules": {
+    "increaseIndentPattern": "^\\s*(begin|.*\\bdo|.*\\bthen|else)\\s*$",
+    "decreaseIndentPattern": "^\\s*end\\b"
+  }
+}
