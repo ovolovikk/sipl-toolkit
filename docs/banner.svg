@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="384" viewBox="0 0 760 384">
+<style>
+text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 14px; white-space: pre; }
+.prompt { fill: #7ee787; }
+.cmd { fill: #e6edf3; }
+.trace { fill: #c9d1d9; }
+.state { fill: #79c0ff; }
+.leaves { fill: #ffa657; }
+.title { fill: #8b949e; font-size: 12px; }
+</style>
+<rect width="760" height="384" rx="10" fill="#0d1117"/>
+<rect width="760" height="34" rx="10" fill="#161b22"/>
+<rect y="24" width="760" height="10" fill="#161b22"/>
+<circle cx="20" cy="17" r="6" fill="#ff5f56"/>
+<circle cx="40" cy="17" r="6" fill="#ffbd2e"/>
+<circle cx="60" cy="17" r="6" fill="#27c93f"/>
+<text x="380" y="21" text-anchor="middle" class="title">sipl · SIPL на Rust</text>
+<clipPath id="c0"><rect x="22" y="42" width="0" height="22"><animate attributeName="width" from="0" to="328" begin="0.60s" dur="1.30s" fill="freeze"/></rect></clipPath><text x="22" y="58" clip-path="url(#c0)"><tspan class="prompt">$ </tspan><tspan class="cmd">sipl run examples/power.sipl X=2 Y=10</tspan></text>
+<text x="22" y="80" class="state" opacity="0">[R ↦ 1024, X ↦ 2, Y ↦ 0]<animate attributeName="opacity" from="0" to="1" begin="2.25s" dur="0.25s" fill="freeze"/></text>
+<clipPath id="c2"><rect x="22" y="108" width="0" height="22"><animate attributeName="width" from="0" to="336" begin="3.00s" dur="1.33s" fill="freeze"/></rect></clipPath><text x="22" y="124" clip-path="url(#c2)"><tspan class="prompt">$ </tspan><tspan class="cmd">sipl trace examples/power.sipl X=2 Y=1</tspan></text>
+<text x="22" y="146" class="trace" opacity="0">2:3    R := 1                R: — → 1<animate attributeName="opacity" from="0" to="1" begin="4.68s" dur="0.25s" fill="freeze"/></text>
+<text x="22" y="168" class="trace" opacity="0">3:3    while Y &gt; 0 do<animate attributeName="opacity" from="0" to="1" begin="4.96s" dur="0.25s" fill="freeze"/></text>
+<text x="22" y="190" class="trace" opacity="0">3:9      Y &gt; 0 = true<animate attributeName="opacity" from="0" to="1" begin="5.24s" dur="0.25s" fill="freeze"/></text>
+<text x="22" y="212" class="trace" opacity="0">5:5      R := R * X            R: 1 → 2<animate attributeName="opacity" from="0" to="1" begin="5.52s" dur="0.25s" fill="freeze"/></text>
+<text x="22" y="234" class="trace" opacity="0">6:5      Y := Y - 1            Y: 1 → 0<animate attributeName="opacity" from="0" to="1" begin="5.80s" dur="0.25s" fill="freeze"/></text>
+<text x="22" y="256" class="trace" opacity="0">3:9      Y &gt; 0 = false<animate attributeName="opacity" from="0" to="1" begin="6.08s" dur="0.25s" fill="freeze"/></text>
+<text x="22" y="278" class="state" opacity="0">       [R ↦ 2, X ↦ 2, Y ↦ 0]<animate attributeName="opacity" from="0" to="1" begin="6.36s" dur="0.25s" fill="freeze"/></text>
+<clipPath id="c10"><rect x="22" y="306" width="0" height="22"><animate attributeName="width" from="0" to="260" begin="7.11s" dur="1.02s" fill="freeze"/></rect></clipPath><text x="22" y="322" clip-path="url(#c10)"><tspan class="prompt">$ </tspan><tspan class="cmd">sipl tree examples/power.sipl</tspan></text>
+<text x="22" y="344" class="leaves" opacity="0">листки: 1 begin 2 R 3 := 4 1 5 ; 6 while … 24 end  ✓ = текст програми<animate attributeName="opacity" from="0" to="1" begin="8.47s" dur="0.25s" fill="freeze"/></text>
+</svg>
